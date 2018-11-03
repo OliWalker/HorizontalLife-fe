@@ -21,6 +21,7 @@ Contributions welcome!
 - refactoring branches start with refactor/
 - test branches start with test/
 - just styling branches start with style/
+- documentation starts with docs/
 
 **Commits**
 Follow the 'type (scope) : subject' methodology...
