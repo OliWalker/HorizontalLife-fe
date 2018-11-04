@@ -12,8 +12,10 @@ export default {
   Gym: {
     gymName: 'Chris Sharma',
     logo: '',
+    picture:
+      'https://www.walltopia.com/media/k2/items/cache/3e8e1949f1c3300c7f060866b463e01c_L.jpg',
     motto: '',
-    adress: '',
+    address: '',
     city: 'barcelona',
     country: 'spain',
     latlng: { lat: 41.01, lng: 43.03 },
