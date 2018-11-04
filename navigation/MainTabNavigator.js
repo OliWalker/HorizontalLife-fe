@@ -1,18 +1,35 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import GymListScreen from '../screens/GymListScreen';
+import RoutesScreen from '../screens/RoutesScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import UnusedScreen from '../screens/UnusedScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const GymsStack = createStackNavigator({
+  Gyms: GymListScreen
 });
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+GymsStack.navigationOptions = {
+  tabBarLabel: 'Gyms',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+    />
+  )
+};
+const RoutesStack = createStackNavigator({
+  Routes: RoutesScreen
+});
+
+RoutesStack.navigationOptions = {
+  tabBarLabel: 'Routes',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -22,39 +39,40 @@ HomeStack.navigationOptions = {
           : 'md-information-circle'
       }
     />
-  ),
+  )
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-    />
-  ),
-};
-
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
-});
-
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
-  ),
+  )
 };
 
+// const UnusedStack = createStackNavigator({
+//   Unused: UnusedScreen
+// });
+
+// UnusedStack.navigationOptions = {
+//   tabBarLabel: 'Unused',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+//     />
+//   )
+// };
+
 export default createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
-  SettingsStack,
+  GymsStack,
+  RoutesStack,
+  ProfileStack
+  // UnusedStack
 });
