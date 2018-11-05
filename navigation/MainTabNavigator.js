@@ -25,10 +25,11 @@ GymsStack.navigationOptions = {
     />
   )
 };
+
 const RoutesStack = createStackNavigator({
   Routes: RoutesScreen,
-  ImagePicker: ImagePickerScreen
 });
+
 
 RoutesStack.navigationOptions = {
   tabBarLabel: 'Routes',
@@ -72,9 +73,19 @@ ProfileStack.navigationOptions = {
 //   )
 // };
 
-export default createBottomTabNavigator({
+const TabNavigator =  createBottomTabNavigator({
   GymsStack,
   RoutesStack,
   ProfileStack
   // UnusedStack
+});
+
+TabNavigator.navigationOptions = {
+  // Hide the header from AppNavigator stack
+  header: null,
+};
+
+export default createStackNavigator({
+  Tabs: TabNavigator,
+  ImagePicker: ImagePickerScreen, //route to render above the tab bar
 });

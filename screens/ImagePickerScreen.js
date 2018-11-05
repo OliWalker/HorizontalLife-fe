@@ -1,30 +1,17 @@
-// import React from 'react';
-// import { Text, View, Button } from 'react-native';
-// import { withNavigation } from 'react-navigation';
-//
-// class RoutesScreen extends React.Component {
-//   //this is the top bar
-//   static navigationOptions = {
-//     header: null
-//   };
-//
-//   render() {
-//     return (
-//       <View>
-//         <Text>ImagePicker Screen</Text>
-//         <Button
-//           title="Go Back"
-//           onPress={() => { this.props.navigation.goBack() }} />
-//       </View>
-//     );
-//   }
-// }
-
 import React from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { Text, View, StatusBar } from 'react-native';
+import { Icon, Button } from 'react-native-elements'
 import { Camera, Permissions } from 'expo';
+import { withNavigation } from 'react-navigation';
 
-export default class RoutesScreen extends React.Component {
+
+class RoutesScreen extends React.Component {
+
+    //this is the top bar
+    static navigationOptions = {
+      header: null
+    };
+
   state = {
     hasCameraPermission: null,
     type: Camera.Constants.Type.back,
@@ -44,6 +31,7 @@ export default class RoutesScreen extends React.Component {
     } else {
       return (
         <View style={{ flex: 1 }}>
+          <StatusBar hidden />
           <Camera style={{ flex: 1 }} type={this.state.type}>
             <View
               style={{
@@ -51,24 +39,25 @@ export default class RoutesScreen extends React.Component {
                 backgroundColor: 'transparent',
                 flexDirection: 'row',
               }}>
-              <TouchableOpacity
-                style={{
-                  flex: 0.1,
-                  alignSelf: 'flex-end',
-                  alignItems: 'center',
+              <Button
+                onPress={() => this.props.navigation.goBack()}
+                buttonStyle={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.6)',
+                  width: 60,
+                  height: 60,
+                  borderColor: 'transparent',
+                  borderWidth: 0,
+                  borderRadius: 50,
                 }}
-                onPress={() => {
-                  this.setState({
-                    type: this.state.type === Camera.Constants.Type.back
-                      ? Camera.Constants.Type.front
-                      : Camera.Constants.Type.back,
-                  });
-                }}>
-                <Text
-                  style={{ fontSize: 18, marginBottom: 10, color: 'white' }}>
-                  {' '}Flip{' '}
-                </Text>
-              </TouchableOpacity>
+                title=''
+                icon={
+                  <Icon
+                    name='close'
+                    size={30}
+                    color='black'
+                  />}
+                containerStyle={{ marginTop: 20, marginLeft: 20 }}
+              />
             </View>
           </Camera>
         </View>
@@ -77,4 +66,4 @@ export default class RoutesScreen extends React.Component {
   }
 }
 
-// export default withNavigation(RoutesScreen);
+export default withNavigation(RoutesScreen);
