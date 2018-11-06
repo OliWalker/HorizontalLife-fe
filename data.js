@@ -11,10 +11,11 @@ export default {
   },
   Gym: {
     gymName: 'Chris Sharma',
-    logo: '',
+    logo:
+      'http://www.sharmaclimbingbcn.com/wp-content/themes/sharma-theme/img/logo.png',
     picture:
       'https://www.walltopia.com/media/k2/items/cache/3e8e1949f1c3300c7f060866b463e01c_L.jpg',
-    motto: '',
+    motto: 'Just go and climb it.',
     address: '',
     city: 'barcelona',
     country: 'spain',
