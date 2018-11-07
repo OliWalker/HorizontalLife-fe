@@ -27,15 +27,19 @@ class RoutesScreen extends React.Component {
     if (this.camera) {
       await this.camera.takePictureAsync()
         .then(data => {
-          this.setState((state) => {
-            return {
-              ...state,
-              image: data.uri
-            }
-          })
+          // this.setState((state) => {
+          //   return {
+          //     ...state,
+          //     image: data.uri
+          //   }
+          // })
+          if (data.uri) {
+            this.props.navigation.navigate('DrawingScreen', {
+              imageUri: data.uri
+            });
+          }
         })
     }
-    console.log(this.state);
   };
 
   render() {
