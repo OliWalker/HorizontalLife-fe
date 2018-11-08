@@ -1,7 +1,22 @@
 import React from 'react';
-import { View, StatusBar, Image, Dimensions, Button } from 'react-native';
+import { View, StatusBar, Image, Dimensions, Button, StyleSheet } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Svg } from 'expo';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  container_bottom: {
+    flex: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    height: 120,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row'
+  }
+});
 
 class DrawingLayer extends React.Component {
   static defaultProps = {
@@ -94,7 +109,7 @@ class DrawingScreen extends React.Component {
     const { imageUri } = this.props.navigation.state.params;
     if (imageUri) {
       return (
-        <View style={{ flex: 1, justifyContent: 'space-between' }}>
+        <View style={styles.container}>
           <StatusBar hidden />
           {Dimensions.get('window') &&
           <DrawingLayer
@@ -111,14 +126,7 @@ class DrawingScreen extends React.Component {
           </DrawingLayer>
           }
           <View
-            style={{
-              flex: 0,
-              backgroundColor: 'rgba(255, 255, 255, 0)',
-              height: 120,
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              flexDirection: 'row'
-            }}>
+            style={styles.container_bottom}>
             <Button
               onPress={() => this.props.navigation.goBack()}
               title='goBack'
