@@ -23,6 +23,16 @@ export default {
     members: [],
     sections: [],
     routes: [],
+    stats: [
+      { routeCount: 36 },
+      { sectionCount: 8 },
+      { memberCount: 98 },
+      { gym: true },
+      { yoga: true },
+      { changeTime: 'bi-weekly' },
+      { food: true },
+      { beer: true }
+    ],
     map: '#######'
   },
   Section: {

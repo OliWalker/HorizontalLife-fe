@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native';
 import { Card, ListItem, Button, Icon, Divider } from 'react-native-elements';
 
@@ -29,7 +29,7 @@ export default class GymListScreen extends React.Component {
           snapToAlignment={'center'}
           style={{ display: 'flex', flexDirection: 'row' }}
         >
-          <TouchableHighlight
+          <TouchableOpacity
             onPress={() => this.props.navigation.navigate('HomeGymScreen', {})}
           >
             <Card
@@ -39,7 +39,7 @@ export default class GymListScreen extends React.Component {
               <Text style={styles.title}>{data.Gym.gymName}</Text>
               <Text style={styles.open}>Open 8:00 - 23:00</Text>
             </Card>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <Card
             containerStyle={styles.myGymCard}
             image={{ uri: data.Gym.picture }}

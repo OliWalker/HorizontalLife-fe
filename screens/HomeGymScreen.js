@@ -1,8 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import { Tile, Avatar, ButtonGroup, Card } from 'react-native-elements';
+import {
+  Tile,
+  Avatar,
+  ButtonGroup,
+  Card,
+  Header,
+  Button
+} from 'react-native-elements';
 
 import data from '../data';
+import GymStats from '../components/GymStats';
+import { TouchableOpacity } from 'react-native';
 
 export default class GymListScreen extends React.Component {
   //this is the top bar
@@ -11,59 +20,60 @@ export default class GymListScreen extends React.Component {
   };
 
   state = {
-    selectedIndex: 2
+    stats: true
   };
 
   updateIndex = selectedIndex => this.setState({ selectedIndex });
 
   render() {
-    const buttons = ['Stats', 'Feed', 'Routes'];
-    const { selectedIndex } = this.state;
+    const { stats } = this.state;
     return (
       <View style={styles.page}>
         <Image source={{ uri: data.Gym.picture }} style={styles.imageOverlay} />
+
         <View style={styles.banner}>
+          <TouchableOpacity onPress={() => this.setState({ stats: false })}>
+            <Text style={styles.headerButton}>[News Icon]</Text>
+          </TouchableOpacity>
           <Text style={styles.gymName}>{data.Gym.gymName}</Text>
+          <TouchableOpacity onPress={() => this.setState({ stats: true })}>
+            <Text style={styles.headerButton}>[Stats Icon]</Text>
+          </TouchableOpacity>
         </View>
 
-        <ButtonGroup
-          onPress={this.updateIndex}
-          selectedIndex={selectedIndex}
-          buttons={buttons}
-          containerStyle={{ height: 30 }}
-        />
+        {stats ? <GymStats /> : <View />}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  page: { position: 'relative', backgroundColor: 'white', flex: 1 },
+  page: {
+    display: 'flex',
+    justifyContent: 'flex-start'
+  },
   imageOverlay: {
     height: 200,
     width: 411
   },
   banner: {
-    position: 'absolute',
-    top: 170,
     width: 411,
-    height: 30,
-    backgroundColor: 'rgba(30,30,30, 0.3)',
+    height: 50,
+    backgroundColor: '#031A6B',
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 5
+    padding: 10
   },
   gymName: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 20
   },
-  tabs: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: 411
+  headerButton: {
+    color: 'white',
+    fontSize: 15,
+    padding: 10
   }
 });
