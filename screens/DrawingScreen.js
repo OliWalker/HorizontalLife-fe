@@ -25,7 +25,19 @@ class DrawingLayer extends React.Component {
   }
 
   state = {
-    points: []
+    points: [],
+    color: 'yellow',
+    strokeWidth: 2.5,
+    radius: 25,
+    //One straight line option
+    // line: {
+    //   x1: null,
+    //   y1: null,
+    //   x2: null,
+    //   y2: null,
+    // },
+    linePath: '',
+    linePoints: []
   }
 
   onStartShouldSetResponder = (evt) => {
@@ -37,45 +49,138 @@ class DrawingLayer extends React.Component {
   }
 
   onResponderRelease = (evt) => {
-    const point = {
-      x: evt.nativeEvent.locationX,
-      y: evt.nativeEvent.locationY,
-      timestamp: evt.nativeEvent.timestamp
-    }
-    this.setState((state) => {
-      return {
-        points: [
-          ...state.points,
-          point
-        ]
+    if (this.props.isCircleMode) {
+      const point = {
+        x: evt.nativeEvent.locationX,
+        y: evt.nativeEvent.locationY,
+        timestamp: evt.nativeEvent.timestamp
       }
-    })
+      this.setState((state) => {
+        return {
+          points: [
+            ...state.points,
+            point
+          ]
+        }
+      })
+    }
     this.props.onPress();
   }
 
+  onResponderMove = (evt) => {
+    console.log('move');
+    const x2 = evt.nativeEvent.locationX;
+    const y2 = evt.nativeEvent.locationY;
+    const { x, y } = this.state.linePoints[this.state.linePoints.length - 1];
+
+    const controlPointStartX = x;
+    const controlPointStartY = y;
+
+    const controlPointEndX = x2;
+    const controlPointEndY = y2;
+
+    const line = ` C ${controlPointStartX} ${controlPointStartY}, ${controlPointEndX} ${controlPointEndY}, ${x2} ${y2}`
+
+    this.setState((state) => {
+      return {
+        ...state,
+        linePath: state.linePath + line,
+        linePoints: [
+          ...state.linePoints,
+          { x: x2, y: y2}
+        ]
+      }
+    })
+    //One straight line option
+    // this.setState((state) => {
+    //   return {
+    //     ...state,
+    //     line: {
+    //       ...state.line,
+    //       x2,
+    //       y2
+    //     }
+    //   }
+    // })
+
+  }
+
+  onResponderGrant = (evt) => {
+    console.log('start');
+    const x = evt.nativeEvent.locationX;
+    const y = evt.nativeEvent.locationY;
+    const startPoint = `M${x} ${y}`;
+    this.setState((state) => {
+      return {
+        ...state,
+        linePath: startPoint,
+        linePoints: [ { x, y } ]
+      }
+    })
+
+    //One straight line option
+    // this.setState((state) => {
+    //   return {
+    //     ...state,
+    //     line: {
+    //       x1,
+    //       y1
+    //     }
+    //   }
+    // })
+  }
+
   renderCircle = () => {
-    const { points } = this.state;
+    const { points, color, strokeWidth, radius } = this.state;
     if (points.length > 0) {
-      const sth = points.map(point =>
+      const circles = points.map(point =>
         <Svg.Circle
           key={point.timestamp}
           cx={point.x}
           cy={point.y}
-          r={25}
-          strokeWidth={2.5}
-          stroke="yellow"
+          r={radius}
+          strokeWidth={strokeWidth}
+          stroke={color}
           fill="white"
           fillOpacity={0}
         />
       )
-      return sth
+      return circles
     }
   }
+
+  renderLine = () => {
+    console.log('Happening');
+    //One straight line option
+    // const { x1, y1, x2, y2 } = this.state.line;
+    const { color, strokeWidth, linePath } = this.state;
+    if (linePath) {
+      return (
+        <Svg.Path
+          d={linePath}
+          fill="none"
+          stroke={color}
+          strokeWidth={strokeWidth}
+        />
+        // <Svg.Line
+        //   x1={x1}
+        //   y1={y1}
+        //   x2={x2}
+        //   y2={y2}
+        //   stroke={color}
+        //   strokeWidth={strokeWidth}
+        // />
+      )
+    }
+  }
+
   render() {
     return (
       <View
         onStartShouldSetResponder={this.onStartShouldSetResponder}
         onResponderRelease={this.onResponderRelease}
+        onResponderMove={this.onResponderMove}
+        onResponderGrant={this.onResponderGrant}
         style={{
           height: Dimensions.get('window').height-120,
           width: Dimensions.get('window').width
@@ -86,7 +191,12 @@ class DrawingLayer extends React.Component {
           height={Dimensions.get('window').height-120}
           width={Dimensions.get('window').width}
         >
-          {this.renderCircle()}
+          {
+            this.props.isCircleMode ?
+              this.renderCircle()
+              : this.renderLine()
+          }
+
         </Svg>
       </View>
     );
@@ -102,7 +212,7 @@ class DrawingScreen extends React.Component {
 
   state = {
     image: '',
-    circleMode: false
+    isCircleMode: false
   };
 
   render() {
@@ -114,6 +224,7 @@ class DrawingScreen extends React.Component {
           {Dimensions.get('window') &&
           <DrawingLayer
             onPress={() => console.log('happening!')} //eslint-disable-line
+            isCircleMode={this.state.isCircleMode}
           >
             <Image
               source={{ uri: imageUri }}
@@ -134,15 +245,15 @@ class DrawingScreen extends React.Component {
             <Button
               title='Line /|/'
               onPress={() => {
-                if (this.state.circleMode) {
+                if (this.state.isCircleMode) {
                   this.setState((state) => {
                     return {
                       ...state,
-                      circleMode: !state.circleMode
+                      isCircleMode: !state.isCircleMode
                     }
                   })
                 }
-                console.log('drawing line', 'circleMode->',this.state.circleMode) //eslint-disable-line
+                console.log('drawing line', 'isCircleMode->',this.state.isCircleMode) //eslint-disable-line
               }}
             />
             <Button
@@ -152,15 +263,15 @@ class DrawingScreen extends React.Component {
             <Button
               title='Circle oOo'
               onPress={() => {
-                if (!this.state.circleMode) {
+                if (!this.state.isCircleMode) {
                   this.setState((state) => {
                     return {
                       ...state,
-                      circleMode: !state.circleMode
+                      isCircleMode: !state.isCircleMode
                     }
                   })
                 }
-                console.log('putting circles', 'circleMode->',this.state.circleMode) //eslint-disable-line
+                console.log('putting circles', 'isCircleMode->',this.state.isCircleMode) //eslint-disable-line
               }}
             />
 
