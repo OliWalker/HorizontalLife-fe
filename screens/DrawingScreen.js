@@ -1,9 +1,82 @@
 import React from 'react';
-import { View, StatusBar, Image, Dimensions } from 'react-native';
-import { Icon, Button } from 'react-native-elements'
+import { View, StatusBar, Image, Dimensions, Button } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import { Svg } from 'expo';
 
+class DrawingLayer extends React.Component {
+  static defaultProps = {
+    onPress: () => null,
+    numberOfTouches: 1,
+  }
+
+  state = {
+    points: []
+  }
+
+  onStartShouldSetResponder = (evt) => {
+    if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
+      return true;
+    }
+
+    return false;
+  }
+
+  onResponderRelease = (evt) => {
+    const point = {
+      x: evt.nativeEvent.locationX,
+      y: evt.nativeEvent.locationY,
+      timestamp: evt.nativeEvent.timestamp
+    }
+    this.setState((state) => {
+      return {
+        points: [
+          ...state.points,
+          point
+        ]
+      }
+    })
+    this.props.onPress();
+  }
+
+  renderCircle = () => {
+    const { points } = this.state;
+    if (points.length > 0) {
+      const sth = points.map(point =>
+        <Svg.Circle
+          key={point.timestamp}
+          cx={point.x}
+          cy={point.y}
+          r={25}
+          strokeWidth={2.5}
+          stroke="yellow"
+          fill="white"
+          fillOpacity={0}
+        />
+      )
+      return sth
+    }
+  }
+  render() {
+    return (
+      <View
+        onStartShouldSetResponder={this.onStartShouldSetResponder}
+        onResponderRelease={this.onResponderRelease}
+        style={{
+          height: Dimensions.get('window').height-120,
+          width: Dimensions.get('window').width
+        }}
+      >
+        {this.props.children}
+        <Svg
+          height={Dimensions.get('window').height-120}
+          width={Dimensions.get('window').width}
+        >
+          {this.renderCircle()}
+        </Svg>
+      </View>
+    );
+  }
+}
 
 class DrawingScreen extends React.Component {
 
@@ -19,39 +92,23 @@ class DrawingScreen extends React.Component {
 
   render() {
     const { imageUri } = this.props.navigation.state.params;
-    console.log(imageUri);
     if (imageUri) {
       return (
         <View style={{ flex: 1, justifyContent: 'space-between' }}>
           <StatusBar hidden />
           {Dimensions.get('window') &&
-          <>
-          <Svg
-            height={Dimensions.get('window').height-120}
-            width={Dimensions.get('window').width}
-            // viewBox="0 0 100 100" //???
-            zIndex={2}
+          <DrawingLayer
+            onPress={() => console.log('happening!')} //eslint-disable-line
           >
-            <Svg.Circle
-              cx={50}
-              cy={100}
-              r={50}
-              strokeWidth={2.5}
-              stroke="#e74c3c"
-              fill="#f1c40f"
-            />
-          </Svg>
-          <Image
-            source={{ uri: imageUri }}
-            style={{
-              position: 'absolute',
-              // paddingTop: 240,
-              height: Dimensions.get('window').height-120,
-              width: Dimensions.get('window').width,
-              zIndex: 1
-            }}>
-          </Image>
-          </>
+            <Image
+              source={{ uri: imageUri }}
+              style={{
+                position: 'absolute',
+                height: Dimensions.get('window').height-120,
+                width: Dimensions.get('window').width,
+              }}>
+            </Image>
+          </DrawingLayer>
           }
           <View
             style={{
@@ -64,22 +121,7 @@ class DrawingScreen extends React.Component {
             }}>
             <Button
               onPress={() => this.props.navigation.goBack()}
-              buttonStyle={{
-                backgroundColor: 'rgba(255, 255, 255, 0)',
-                width: 40,
-                height: 40,
-                borderColor: 'black',
-                borderWidth: 2,
-                borderRadius: 40,
-              }}
-              title=''
-              icon={
-                <Icon
-                  name='close'
-                  size={20}
-                  color='black'
-                />}
-              // containerStyle={{ marginTop: 20, marginLeft: 20, zIndex: 3 }}
+              title='goBack'
             />
             <Button
               title='Line /|/'
@@ -92,12 +134,12 @@ class DrawingScreen extends React.Component {
                     }
                   })
                 }
-                console.log('drawing line', 'circleMode->',this.state.circleMode)
+                console.log('drawing line', 'circleMode->',this.state.circleMode) //eslint-disable-line
               }}
             />
             <Button
               title='ColorPicker'
-              onPress={() => console.log('color picker')}
+              onPress={() => console.log('color picker')} //eslint-disable-line
             />
             <Button
               title='Circle oOo'
@@ -110,7 +152,7 @@ class DrawingScreen extends React.Component {
                     }
                   })
                 }
-                console.log('putting circles', 'circleMode->',this.state.circleMode)
+                console.log('putting circles', 'circleMode->',this.state.circleMode) //eslint-disable-line
               }}
             />
 
