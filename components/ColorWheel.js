@@ -11,8 +11,8 @@ class ColorWheel extends React.Component {
   chooseColor = (color) => {
     this.setState({
       selectedColor: color
-    })
-    this.props.getColor(color)
+    });
+    this.props.getColor(color);
   }
 
 
