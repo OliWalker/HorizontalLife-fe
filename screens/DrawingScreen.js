@@ -3,6 +3,8 @@ import { View, StatusBar, Image, Dimensions, Button, StyleSheet } from 'react-na
 import { withNavigation } from 'react-navigation';
 import { Svg } from 'expo';
 
+import ColorWheel from '../components/ColorWheel';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -162,14 +164,6 @@ class DrawingLayer extends React.Component {
           stroke={color}
           strokeWidth={strokeWidth}
         />
-        // <Svg.Line
-        //   x1={x1}
-        //   y1={y1}
-        //   x2={x2}
-        //   y2={y2}
-        //   stroke={color}
-        //   strokeWidth={strokeWidth}
-        // />
       )
     }
   }
@@ -256,9 +250,9 @@ class DrawingScreen extends React.Component {
                 console.log('drawing line', 'isCircleMode->',this.state.isCircleMode) //eslint-disable-line
               }}
             />
-            <Button
-              title='ColorPicker'
-              onPress={() => console.log('color picker')} //eslint-disable-line
+            <ColorWheel
+              size={100}
+              colorArray={['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']}
             />
             <Button
               title='Circle oOo'

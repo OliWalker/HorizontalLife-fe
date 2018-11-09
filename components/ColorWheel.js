@@ -6,27 +6,27 @@ class ColorWheel extends React.Component {
 
   state = {
     selectedColor: 'yellow',
-    strokeWidth: 30,
-    containerWidth: 200,
-    containerHeight: 200,
-    // wheel: {
-    //   radius:
-    // }
-    // colorArray: ['orange', 'red']
-    colorArray: ['orange', 'red', 'pink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']
   }
-  renderPaths = () => {
-    const { colorArray, strokeWidth, containerWidth, containerHeight } = this.state;
-    const centerX = containerWidth / 2;
-    const centerY = containerHeight / 2;
 
-    const radiusXY = 80;
+  chooseColor = (color) => {
+    this.setState({
+      selectedColor: color
+    })
+  }
+
+  renderPaths = () => {
+    //https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#Arcs
+    const { colorArray } = this.props;
+    const  { size } = this.props;
+    const strokeWidth = size * 0.15;
+    const centerX = size / 2;
+    const centerY = size / 2;
+    const radiusXY = size * 0.4;
     const xAxisRotation = 0;
     const largeArcFlag = 0;
     const sweepFlag = 0;
-
     const wheelPartAngle = 360 / colorArray.length;
-    const D = radiusXY*2;
+
     const paths = colorArray.map((path, index) => {
 
       const color = colorArray[index]
@@ -37,93 +37,74 @@ class ColorWheel extends React.Component {
           Math.cos(
             (wheelPartAngle * index) * (Math.PI / 180)) * radiusXY) + centerX} ${
         //y
-        D - (
+        size - (
           Math.round(
             Math.sin(
               (wheelPartAngle  * index) * (Math.PI / 180)) * radiusXY) + centerY)}`;
 
+      //start point for the path
       const M = index === 0
-        ? `${D} ${radiusXY}`
+        ? `${centerX + radiusXY} ${size/2}`
         : startNonZeroPosition;
 
+      //arc of the ellipse
       const d = `M${M} A ${radiusXY} ${radiusXY} ${xAxisRotation} ${largeArcFlag} ${sweepFlag} ${
         //x
+        //Use Math.round() because number is too small, Ex.: see cos90
         Math.round(
-          //
+          // `* (Math.PI / 180)` to conver degrees do radians because Math.cos() accept radians as parameter
           Math.cos(
             (wheelPartAngle * (index + 1)) * (Math.PI / 180)) * radiusXY) + centerX} ${
         //y
-        D - (
+        //Deduct y postion from size (Container's square side) because y axis is reversed
+        size - (
           Math.round(
             Math.sin(
               (wheelPartAngle * (index + 1)) * (Math.PI / 180)) * radiusXY) + centerY)}`;
       return (
-        <Svg.Path
+        <TouchableWithoutFeedback
           key={color}
-          d={d}
-          fill='none'
-          stroke={color}
-          strokeWidth={strokeWidth}
-        />
-        // <Svg.Path
-        //   d='M200 100
-        //   A 100 100, 0, 0, 0, 100 0'
-        //   fill='none'
-        //   stroke='red'
-        //   strokeWidth={strokeWidth}
-        // />
+          onPress={() => this.chooseColor(color)}
+        >
+          <Svg.Path
+            d={d}
+            fill='none'
+            stroke={color}
+            strokeWidth={strokeWidth}
+          />
+        </TouchableWithoutFeedback>
       )
     })
     return  paths;
   }
 
   render() {
-    const {selectedColor, strokeWidth, containerWidth, containerHeight} = this.state;
+    const { selectedColor } = this.state;
+    const { size } = this.props;
+    const centerX = size / 2;
+    const centerY = size / 2;
+    const radiusInnerCircle = size * 0.25
     return (
       <Svg
-        height={containerHeight}
-        width={containerWidth}
-        style={{margin: 20}}
+        height={size}
+        width={size}
       >
         <Svg.Circle
-          cx={100}
-          cy={100}
-          r={50}
+          cx={centerX}
+          cy={centerY}
+          r={radiusInnerCircle}
           fill={selectedColor}
         />
         {this.renderPaths()}
-        {/* <Svg.Path
-          d='M200 100
-          A 100 100, 0, 0, 0, 153 15'
-          fill='none'
-          stroke='red'
-          strokeWidth={strokeWidth}
-        />
-        <Svg.Path
-          d='M100 0
-          A 100 100, 0, 0, 0, 0 100'
-          fill='none'
-          stroke='blue'
-          strokeWidth={strokeWidth}
-        />
-        <Svg.Path
-          d='M0 100
-          A 100 100, 0, 0, 0, 100 200'
-          fill='none'
-          stroke='green'
-          strokeWidth={strokeWidth}
-        />
-        <Svg.Path
-          d='M100 200
-          A 100 100, 0, 0, 0, 200 100'
-          fill='none'
-          stroke='yellow'
-          strokeWidth={strokeWidth}
-        /> */}
       </Svg>
     );
   }
 
+}
+
+ColorWheel.defaultProps = {
+  size: 200,
+  colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']
 }
 
 export default ColorWheel;

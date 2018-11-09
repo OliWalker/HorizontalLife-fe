@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, Button,} from 'react-native';
 import { withNavigation } from 'react-navigation';
-import ColorWheel from '../components/ColorWheel';
 
 
 class RoutesScreen extends React.Component {
@@ -14,12 +13,9 @@ class RoutesScreen extends React.Component {
     return (
       <View>
         <Text>Routes Screen</Text>
-        <ColorWheel>
-
-        </ColorWheel>
-        {/* <Button
+        <Button
           title='Go To Image Picker Screen'
-          onPress={() => { this.props.navigation.navigate('ImagePicker') }} /> */}
+          onPress={() => { this.props.navigation.navigate('ImagePicker') }} />
       </View>
     );
   }
