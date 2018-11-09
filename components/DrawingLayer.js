@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { Svg } from 'expo';
 
 class DrawingLayer extends React.Component {
+
   static defaultProps = {
     onPress: () => null,
     numberOfTouches: 1,
@@ -20,7 +21,6 @@ class DrawingLayer extends React.Component {
     if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
       return true;
     }
-
     return false;
   }
 
@@ -93,8 +93,7 @@ class DrawingLayer extends React.Component {
           r={radius}
           strokeWidth={strokeWidth}
           stroke={color}
-          fill="white"
-          fillOpacity={0}
+          fill='none'
         />
       )
       return circles
@@ -108,11 +107,24 @@ class DrawingLayer extends React.Component {
       return (
         <Svg.Path
           d={linePath}
-          fill="none"
+          fill='none'
           stroke={color}
           strokeWidth={strokeWidth}
         />
       )
+    }
+  }
+
+  componentDidUpdate (prevProps) {
+    const { points } = this.state;
+    if (prevProps.undoCircle !== this.props.undoCircle
+        && points.length > 0) {
+      this.setState((state) => {
+        return {
+          ...state,
+          points: points.slice(0, points.length-1)
+        }
+      })
     }
   }
 
