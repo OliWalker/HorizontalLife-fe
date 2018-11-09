@@ -28,7 +28,6 @@ class DrawingLayer extends React.Component {
 
   state = {
     points: [],
-    color: 'yellow',
     strokeWidth: 2.5,
     radius: 25,
     //One straight line option
@@ -133,7 +132,8 @@ class DrawingLayer extends React.Component {
   }
 
   renderCircle = () => {
-    const { points, color, strokeWidth, radius } = this.state;
+    const { points, strokeWidth, radius } = this.state;
+    const { color } = this.props;
     if (points.length > 0) {
       const circles = points.map(point =>
         <Svg.Circle
@@ -155,7 +155,8 @@ class DrawingLayer extends React.Component {
     console.log('Happening');
     //One straight line option
     // const { x1, y1, x2, y2 } = this.state.line;
-    const { color, strokeWidth, linePath } = this.state;
+    const { strokeWidth, linePath } = this.state;
+    const { color } = this.props;
     if (linePath) {
       return (
         <Svg.Path
@@ -206,8 +207,18 @@ class DrawingScreen extends React.Component {
 
   state = {
     image: '',
-    isCircleMode: false
+    isCircleMode: false,
+    color: 'yellow'
   };
+
+  getColor = (color) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        color
+      }
+    })
+  }
 
   render() {
     const { imageUri } = this.props.navigation.state.params;
@@ -217,8 +228,9 @@ class DrawingScreen extends React.Component {
           <StatusBar hidden />
           {Dimensions.get('window') &&
           <DrawingLayer
-            onPress={() => console.log('happening!')} //eslint-disable-line
+            // onPress={() => console.log('happening!')} //eslint-disable-line
             isCircleMode={this.state.isCircleMode}
+            color={this.state.color}
           >
             <Image
               source={{ uri: imageUri }}
@@ -253,6 +265,7 @@ class DrawingScreen extends React.Component {
             <ColorWheel
               size={100}
               colorArray={['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']}
+              getColor={this.getColor}
             />
             <Button
               title='Circle oOo'

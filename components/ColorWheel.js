@@ -12,7 +12,9 @@ class ColorWheel extends React.Component {
     this.setState({
       selectedColor: color
     })
+    this.props.getColor(color)
   }
+
 
   renderPaths = () => {
     //https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#Arcs
@@ -104,7 +106,7 @@ class ColorWheel extends React.Component {
 
 ColorWheel.defaultProps = {
   size: 200,
-  colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']
+  colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow'],
 }
 
 export default ColorWheel;
