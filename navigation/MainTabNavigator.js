@@ -9,7 +9,10 @@ import TabBarIcon from '../components/TabBarIcon';
 import GymListScreen from '../screens/GymListScreen';
 import RoutesScreen from '../screens/RoutesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import UnusedScreen from '../screens/UnusedScreen';
+import ImagePickerScreen from '../screens/ImagePickerScreen';
+import DrawingScreen from '../screens/DrawingScreen';
+
+// import UnusedScreen from '../screens/UnusedScreen';
 
 const GymsStack = createStackNavigator({
   Gyms: GymListScreen
@@ -24,9 +27,11 @@ GymsStack.navigationOptions = {
     />
   )
 };
+
 const RoutesStack = createStackNavigator({
-  Routes: RoutesScreen
+  Routes: RoutesScreen,
 });
+
 
 RoutesStack.navigationOptions = {
   tabBarLabel: 'Routes',
@@ -70,9 +75,29 @@ ProfileStack.navigationOptions = {
 //   )
 // };
 
-export default createBottomTabNavigator({
+const ImageEditorStack = createStackNavigator({
+  ImagePicker: ImagePickerScreen,
+  DrawingScreen
+});
+
+ImageEditorStack.navigationOptions = {
+  // Hide the header from AppNavigator stack
+  header: null,
+};
+
+const TabNavigator =  createBottomTabNavigator({
   GymsStack,
   RoutesStack,
   ProfileStack
   // UnusedStack
+});
+
+TabNavigator.navigationOptions = {
+  // Hide the header from AppNavigator stack
+  header: null,
+};
+
+export default createStackNavigator({
+  Tabs: TabNavigator,
+  ImageEditorStack //route to render above the tab bar
 });

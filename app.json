@@ -23,5 +23,9 @@
     "ios": {
       "supportsTablet": true
     }
+  },
+  "infoPlist": {
+    "NSCameraUsageDescription": "This app uses the camera to take photos of the routes",
+    "NSPhotoLibraryAddUsageDescription": "This app wants to have access to your library to choose existing route photo"
   }
 }
