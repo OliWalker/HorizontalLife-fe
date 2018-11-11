@@ -30,5 +30,8 @@ module.exports = {
     "indent": [ERROR, 2],
     "react-native/no-unused-styles": ERROR,
     "prefer-const": ERROR,
+    "no-multiple-empty-lines": ERROR,
+    "lines-between-class-members": ERROR,
+    "arrow-parens": [ERROR, "as-needed", { "requireForBlockBody": true }],
   }
 };
