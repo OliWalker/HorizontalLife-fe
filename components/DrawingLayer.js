@@ -17,12 +17,7 @@ class DrawingLayer extends React.Component {
     linePoints: []
   }
 
-  onStartShouldSetResponder = (evt) => {
-    if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
-      return true;
-    }
-    return false;
-  }
+  onStartShouldSetResponder = evt => evt.nativeEvent.touches.length === this.props.numberOfTouches;
 
   onResponderRelease = (evt) => {
     if (this.props.isCircleMode) {

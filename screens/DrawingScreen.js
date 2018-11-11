@@ -99,7 +99,7 @@ class DrawingScreen extends React.Component {
             </TouchableOpacity>
             <ColorWheel
               size={110}
-              colorArray={['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']}
+              colorArray={['red', 'hotpink', 'blue', 'springgreen', 'yellow']}
               getColor={this.getColor}
             />
             <View>
