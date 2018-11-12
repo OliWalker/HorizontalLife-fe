@@ -6,19 +6,64 @@ import {
   TextInput,
   Dimensions,
   Slider,
-  TouchableOpacity
+  TouchableOpacity,
+  StyleSheet
 } from 'react-native';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  container_top: {
+    paddingTop: 10,
+    paddingHorizontal: 10
+  },
+  container_name: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'baseline'
+  },
+  container_input_name: {
+    height: 40,
+    marginLeft: 10,
+    borderColor: 'grey',
+    borderWidth: 1
+  },
+  text_grade: {
+    alignSelf: 'center',
+    fontSize: 50
+  },
+  container_tags: {
+    flex: 0,
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
+  tag: {
+    height: 30,
+    flex: 0,
+    alignSelf: 'flex-start',
+    justifyContent: 'center',
+    paddingHorizontal: 10,
+    margin: 3,
+    borderWidth: 2,
+    borderRadius: 50,
+    borderColor: 'gray'
+  },
+  container_bottom: {
+    backgroundColor: 'white',
+    shadowColor: 'black'
+  }
+});
 
 export default class UploadRouteScreen extends React.Component {
 
-  static navigationOptions = ({ navigation }) => { //eslint-disable-line
+  static navigationOptions = ({ navigation }) => {
     return {
       title: 'Your Route',
-      headerBackTitle: 'Editor',
       headerRight: (
         <Button
-          // onPress={navigation.getParam('publishRoute')}
-          onPress={() => console.log('pressed')} //eslint-disable-line
+          onPress={navigation.getParam('publishRoute')}
           title='Publish'
         />
       )
@@ -30,7 +75,9 @@ export default class UploadRouteScreen extends React.Component {
   }
 
   publishRoute = () => {
-    alert('Publishing Route')
+    const { routeName, chosenTags } = this.state;
+    const grade = this.props.grades[this.state.grade];
+    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade)
   }
 
   static defaultProps = {
@@ -47,24 +94,43 @@ export default class UploadRouteScreen extends React.Component {
     chosenTags: []
   }
 
+  chooseTag = (tag) => {
+    const { chosenTags } = this.state;
+    const index = chosenTags.indexOf(tag);
+    if (index >= 0) {
+      const array = this.state.chosenTags
+      this.setState((state) => {
+        return {
+          ...state,
+          chosenTags: array.filter(el => el !== tag)
+        }
+      })
+    } else {
+      this.setState((state) => {
+        return {
+          ...state,
+          chosenTags: [
+            ...state.chosenTags,
+            tag
+          ]
+        }
+      })
+    }
+  }
+
   renderTags = () => {
     const tags = this.props.tags.map((tag) => {
+      const isSelected = this.state.chosenTags.includes(tag);
+      const color = isSelected ? 'yellow' : 'white';
       return (
         <TouchableOpacity
           key={tag}
+          onPress={() => this.chooseTag(tag)}
         >
           <View
             style={{
-              flex: 0,
-              borderWidth: 2,
-              backgroundColor: 'pink',
-              borderColor: 'gray',
-              borderRadius: 50,
-              alignSelf: 'flex-start',
-              paddingHorizontal: 10,
-              height: 30,
-              justifyContent: 'center',
-              margin: 3
+              ...styles.tag,
+              backgroundColor: color,
             }}
           >
             <Text>
@@ -77,56 +143,55 @@ export default class UploadRouteScreen extends React.Component {
     return tags;
   }
 
+  gradeUpdate = (value) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        grade: value
+      }
+    })
+  }
+
   render() {
     const { height, width } = Dimensions.get('window');
     if (height) {
       return (
-        <View style={{
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: 'yellow'
-        }}>
+        <View style={styles.container}>
           <View style={{
-            height: height*0.75,
-            backgroundColor: 'pink',
-            paddingHorizontal: 10,
-            paddingTop: 10
-
+            ...styles.container_top,
+            height: height * 0.75,
           }}>
             <View style={{
-              flex: 0,
-              flexDirection: 'row',
-              height: height * 0.1,
-              backgroundColor: 'red',
-              alignItems: 'baseline'
+              ...styles.container_name,
+              height: height * 0.1
             }}>
               <Text>
                 NAME
               </Text>
               <TextInput
                 style={{
-                  height: 40,
-                  width: width * 0.6,
-                  borderColor: 'gray',
-                  borderWidth: 1,
-                  marginLeft: 10,
+                  ...styles.container_input_name,
+                  width: width * 0.6
                 }}
+                onChangeText={text => this.setState((state) => {
+                  return {
+                    ...state,
+                    routeName: text
+                  }
+                })}
+                maxLength={25}
                 placeholder='Plastic tortilla'
+                placeholderTextColor='grey'
               />
             </View>
             <View style={{
-              backgroundColor: 'violet',
-              height: height * 0.2,
-              flex: 0
+              height: height * 0.2
             }}>
               <Text>
                 GRADE
               </Text>
               <Text
-                style={{
-                  alignSelf: 'center',
-                  fontSize: 50
-                }}
+                style={styles.text_grade}
               >
                 {this.props.grades[this.state.grade]}
               </Text>
@@ -135,29 +200,19 @@ export default class UploadRouteScreen extends React.Component {
                 minimumValue={0}
                 maximumValue={this.props.grades.length-1}
                 value={this.state.grade}
-                onValueChange={(value) => {
-                  this.setState((state) => {
-                    return {
-                      ...state,
-                      grade: value
-                    }
-                  })
-                }}
+                onValueChange={value => this.gradeUpdate(value)}              
               >
               </Slider>
             </View>
             <View
-              style={{
-                backgroundColor: 'green',
-                flex: 0,
-                flexWrap: 'wrap',
-                flexDirection: 'row'
-              }}
+              style={styles.container_tags}
             >
               {this.renderTags()}
             </View>
           </View>
-          <View>
+          <View
+            style={styles.container_bottom}
+          >
             <Button
               title='preview'
               onPress={() => console.log('pressed preview')} //eslint-disable-line
