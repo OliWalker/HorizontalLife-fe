@@ -6,7 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Button
+  Text
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
@@ -25,7 +25,23 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'space-around',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+  },
+  button_done: {
+    position: 'absolute',
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginTop: 20,
+    width: 100,
+    height: 40,
+    borderRadius: 50
+  },
+  text_button_done: {
+    fontSize: 25,
+    color: '#007AFF'
   }
 });
 
@@ -121,20 +137,18 @@ class DrawingScreen extends React.Component {
                 width: Dimensions.get('window').width,
               }}>
             </Image>
-            <Button
-              style={{
-                // position: 'absolute',
-                backgroundColor: 'white',
-                marginTop: 30,
-                marginRight: 30,
-                width: 100,
-                height: 30,
-              }}
-              onPress={() => this.handleDoneButton()}
-              title='Done'
-            />
           </DrawingLayer>
           }
+          <TouchableOpacity
+            style={styles.button_done}
+            onPress={() => this.handleDoneButton()}
+          >
+            <Text
+              style={styles.text_button_done}
+            >
+              Done
+            </Text>
+          </TouchableOpacity>
           <View
             style={styles.container_bottom}>
             <TouchableOpacity
