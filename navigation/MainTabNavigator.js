@@ -11,6 +11,8 @@ import RoutesScreen from '../screens/RoutesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ImagePickerScreen from '../screens/ImagePickerScreen';
 import DrawingScreen from '../screens/DrawingScreen';
+import UploadRouteScreen from '../screens/UploadRouteScreen';
+import RoutePreviewScreen from '../screens/RoutePreviewScreen';
 
 // import UnusedScreen from '../screens/UnusedScreen';
 
@@ -75,12 +77,14 @@ ProfileStack.navigationOptions = {
 //   )
 // };
 
-const ImageEditorStack = createStackNavigator({
+const ImageUploadStack = createStackNavigator({
   ImagePicker: ImagePickerScreen,
-  DrawingScreen
+  DrawingScreen,
+  UploadRouteScreen,
+  RoutePreviewScreen
 });
 
-ImageEditorStack.navigationOptions = {
+ImageUploadStack.navigationOptions = {
   // Hide the header from AppNavigator stack
   header: null,
 };
@@ -99,5 +103,5 @@ TabNavigator.navigationOptions = {
 
 export default createStackNavigator({
   Tabs: TabNavigator,
-  ImageEditorStack //route to render above the tab bar
+  ImageUploadStack //route to render above the tab bar
 });

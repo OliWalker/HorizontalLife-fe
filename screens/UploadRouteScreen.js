@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 const styles = StyleSheet.create({
   container: {
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   }
 });
 
-export default class UploadRouteScreen extends React.Component {
+class UploadRouteScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -77,7 +78,8 @@ export default class UploadRouteScreen extends React.Component {
   publishRoute = () => {
     const { routeName, chosenTags } = this.state;
     const grade = this.props.grades[this.state.grade];
-    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade)
+    const { imageUri, color, type, svg } = this.props.navigation.state.params;
+    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, color, type, svg) //eslint-disable-line
   }
 
   static defaultProps = {
@@ -154,6 +156,7 @@ export default class UploadRouteScreen extends React.Component {
 
   render() {
     const { height, width } = Dimensions.get('window');
+    // console.log(this.props.navigation.state.params)
     if (height) {
       return (
         <View style={styles.container}>
@@ -223,3 +226,5 @@ export default class UploadRouteScreen extends React.Component {
     }
   }
 }
+
+export default withNavigation(UploadRouteScreen);

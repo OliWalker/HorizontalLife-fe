@@ -84,7 +84,7 @@ class ImagePickerScreen extends React.Component {
   takePicture = async () => {
     if (this.camera) {
       await this.camera.takePictureAsync()
-        .then(data => {
+        .then((data) => {
           if (data.uri) {
             this.props.navigation.navigate('DrawingScreen', {
               imageUri: data.uri
@@ -125,7 +125,7 @@ class ImagePickerScreen extends React.Component {
           <Camera
             style={styles.camera}
             type={this.state.type}
-            ref={ref => { this.camera = ref }}
+            ref={ref => this.camera = ref }
           >
             <Button
               onPress={() => this.props.navigation.navigate('Routes')}

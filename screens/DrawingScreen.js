@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Button
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
@@ -39,7 +40,12 @@ class DrawingScreen extends React.Component {
     image: '',
     isCircleMode: false,
     color: 'yellow',
-    undoCircle: ''
+    undoCircle: '',
+    isSVGDoneToggle: false,
+    drawing: {
+      type: '',
+      svg: ''
+    }
   };
 
   getColor = (color) => {
@@ -51,8 +57,48 @@ class DrawingScreen extends React.Component {
     })
   }
 
+  getSVG = (type, svg) => {
+    console.log('is called')
+    this.setState((state) => {
+      return {
+        ...state,
+        drawing: {
+          type,
+          svg
+        }
+      } 
+    })
+  }
+
+  handleDoneButton = async () => {
+    this.setState((state) => {
+      return {
+        ...state,
+        isSVGDoneToggle: !this.state.isSVGDoneToggle
+      }
+    })
+
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.drawing.svg !== this.state.drawing.svg) {
+      const { color } = this.state;
+      const { imageUri } = this.props.navigation.state.params;
+      const { type, svg } = this.state.drawing;
+      this.props.navigation.navigate('UploadRouteScreen', {
+        imageUri,
+        color,
+        type,
+        svg
+      })
+    }
+  }
+
   render() {
     const { imageUri } = this.props.navigation.state.params;
+    const { isSVGDoneToggle } = this.state;
+    // console.log(this.state, '---------------')
+
     if (imageUri) {
       return (
         <View style={styles.container}>
@@ -64,6 +110,8 @@ class DrawingScreen extends React.Component {
             height={Dimensions.get('window').height-120}
             width={Dimensions.get('window').width}
             undoCircle={this.state.undoCircle}
+            getSVG={this.getSVG}
+            svgDone={isSVGDoneToggle}
           >
             <Image
               source={{ uri: imageUri }}
@@ -73,6 +121,18 @@ class DrawingScreen extends React.Component {
                 width: Dimensions.get('window').width,
               }}>
             </Image>
+            <Button
+              style={{
+                // position: 'absolute',
+                backgroundColor: 'white',
+                marginTop: 30,
+                marginRight: 30,
+                width: 100,
+                height: 30,
+              }}
+              onPress={() => this.handleDoneButton()}
+              title='Done'
+            />
           </DrawingLayer>
           }
           <View
