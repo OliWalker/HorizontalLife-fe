@@ -47,21 +47,30 @@ const styles = StyleSheet.create({
 
 class DrawingScreen extends React.Component {
 
-    //this is the top bar
-    static navigationOptions = {
-      header: null
-    };
+  //this is the top bar
+  static navigationOptions = {
+    header: null
+  };
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      image: '',
+      svg_height: Dimensions.get('window').height - 120,
+      svg_width: Dimensions.get('window').width,
+      isCircleMode: false,
+      color: 'yellow',
+      undoCircle: '',
+      isSVGDoneToggle: false,
+      drawing: {
+        type: '',
+        svg: ''
+      }
+    }
+  }
 
   state = {
-    image: '',
-    isCircleMode: false,
-    color: 'yellow',
-    undoCircle: '',
-    isSVGDoneToggle: false,
-    drawing: {
-      type: '',
-      svg: ''
-    }
+    
   };
 
   getColor = (color) => {
@@ -74,7 +83,6 @@ class DrawingScreen extends React.Component {
   }
 
   getSVG = (type, svg) => {
-    console.log('is called')
     this.setState((state) => {
       return {
         ...state,
@@ -98,33 +106,36 @@ class DrawingScreen extends React.Component {
 
   componentDidUpdate (prevProps, prevState) {
     if (prevState.drawing.svg !== this.state.drawing.svg) {
-      const { color } = this.state;
-      const { imageUri } = this.props.navigation.state.params;
+      const { color, svg_height, svg_width } = this.state;
+      const { imageUri, width, height } = this.props.navigation.state.params;
       const { type, svg } = this.state.drawing;
       this.props.navigation.navigate('UploadRouteScreen', {
         imageUri,
+        width,
+        height,
         color,
         type,
-        svg
+        svg,
+        svg_height,
+        svg_width
       })
     }
   }
 
   render() {
     const { imageUri } = this.props.navigation.state.params;
-    const { isSVGDoneToggle } = this.state;
-    // console.log(this.state, '---------------')
+    const { isSVGDoneToggle, svg_height, svg_width } = this.state;
 
     if (imageUri) {
       return (
         <View style={styles.container}>
           <StatusBar hidden />
-          {Dimensions.get('window') &&
+          {svg_height &&
           <DrawingLayer
             isCircleMode={this.state.isCircleMode}
             color={this.state.color}
-            height={Dimensions.get('window').height-120}
-            width={Dimensions.get('window').width}
+            height={svg_height}
+            width={svg_width}
             undoCircle={this.state.undoCircle}
             getSVG={this.getSVG}
             svgDone={isSVGDoneToggle}
@@ -133,8 +144,8 @@ class DrawingScreen extends React.Component {
               source={{ uri: imageUri }}
               style={{
                 position: 'absolute',
-                height: Dimensions.get('window').height-120,
-                width: Dimensions.get('window').width,
+                height: svg_height,
+                width: svg_width,
               }}>
             </Image>
           </DrawingLayer>

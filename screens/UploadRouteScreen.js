@@ -78,8 +78,8 @@ class UploadRouteScreen extends React.Component {
   publishRoute = () => {
     const { routeName, chosenTags } = this.state;
     const grade = this.props.grades[this.state.grade];
-    const { imageUri, color, type, svg } = this.props.navigation.state.params;
-    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, color, type, svg) //eslint-disable-line
+    const { imageUri, height, width, color, type, svg, svg_height, svg_width } = this.props.navigation.state.params;
+    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, height, width, color, type, svg, svg_height, svg_width) //eslint-disable-line
   }
 
   static defaultProps = {
@@ -156,7 +156,6 @@ class UploadRouteScreen extends React.Component {
 
   render() {
     const { height, width } = Dimensions.get('window');
-    // console.log(this.props.navigation.state.params)
     if (height) {
       return (
         <View style={styles.container}>

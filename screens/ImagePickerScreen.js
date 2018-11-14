@@ -87,7 +87,9 @@ class ImagePickerScreen extends React.Component {
         .then((data) => {
           if (data.uri) {
             this.props.navigation.navigate('DrawingScreen', {
-              imageUri: data.uri
+              imageUri: data.uri,
+              height: data.height,
+              width: data.width
             });
           }
         })
@@ -103,7 +105,9 @@ class ImagePickerScreen extends React.Component {
       if (!result.cancelled) {
         if (result.uri) {
           this.props.navigation.navigate('DrawingScreen', {
-            imageUri: result.uri
+            imageUri: result.uri,
+            height: result.height,
+            width: result.width
           });
         }
         this.setState({ image: result.uri });
