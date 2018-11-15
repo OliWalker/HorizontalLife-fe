@@ -14,7 +14,7 @@ class RoutesScreen extends React.Component {
       <View>
         <Text>Routes Screen</Text>
         <Button
-          title='Go To Image Picker Screen'
+          title='Go To Image Picker'
           onPress={() => { this.props.navigation.navigate('ImagePicker') }} />
       </View>
     );

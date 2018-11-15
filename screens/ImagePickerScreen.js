@@ -1,6 +1,13 @@
 import React from 'react';
-import { Text, View, StatusBar, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Icon, Button } from 'react-native-elements'
+import {
+  Text,
+  View,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
+import { Icon, Button } from 'react-native-elements';
 import { Camera, Permissions, ImagePicker } from 'expo';
 import { withNavigation } from 'react-navigation';
 
@@ -69,28 +76,31 @@ class ImagePickerScreen extends React.Component {
       return {
         ...state,
         hasCameraPermission: status === 'granted'
-      }
+      };
     });
 
-    const permissionsCameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const permissionsCameraRoll = await Permissions
+      .askAsync(Permissions.CAMERA_ROLL);
     this.setState((state) => {
       return {
         ...state,
         hasCameraRollPermission: permissionsCameraRoll.status === 'granted'
-      }
+      };
     });
   }
 
   takePicture = async () => {
     if (this.camera) {
       await this.camera.takePictureAsync()
-        .then(data => {
+        .then((data) => {
           if (data.uri) {
             this.props.navigation.navigate('DrawingScreen', {
-              imageUri: data.uri
+              imageUri: data.uri,
+              height: data.height,
+              width: data.width
             });
           }
-        })
+        });
     }
   };
 
@@ -103,7 +113,9 @@ class ImagePickerScreen extends React.Component {
       if (!result.cancelled) {
         if (result.uri) {
           this.props.navigation.navigate('DrawingScreen', {
-            imageUri: result.uri
+            imageUri: result.uri,
+            height: result.height,
+            width: result.width
           });
         }
         this.setState({ image: result.uri });
@@ -125,7 +137,7 @@ class ImagePickerScreen extends React.Component {
           <Camera
             style={styles.camera}
             type={this.state.type}
-            ref={ref => { this.camera = ref }}
+            ref={ref => this.camera = ref }
           >
             <Button
               onPress={() => this.props.navigation.navigate('Routes')}
@@ -146,7 +158,8 @@ class ImagePickerScreen extends React.Component {
                 style={styles.container_touchable_image}
               >
                 <Image
-                  source={require('../assets/images/icon-photo-gallery-48-white.png')}
+                  source={require(
+                    '../assets/images/icon-photo-gallery-48-white.png')}
                   style={styles.image_photo_gallery}
                 />
               </TouchableOpacity>

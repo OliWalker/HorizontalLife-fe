@@ -5,7 +5,8 @@ import {
   Image,
   Dimensions,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Text
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
@@ -24,22 +25,52 @@ const styles = StyleSheet.create({
     height: 120,
     justifyContent: 'space-around',
     alignItems: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+  },
+  button_done: {
+    position: 'absolute',
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginTop: 20,
+    width: 100,
+    height: 40,
+    borderRadius: 50
+  },
+  text_button_done: {
+    fontSize: 25,
+    color: '#007AFF'
   }
 });
 
 class DrawingScreen extends React.Component {
 
-    //this is the top bar
-    static navigationOptions = {
-      header: null
+  //this is the top bar
+  static navigationOptions = {
+    header: null
+  };
+
+  constructor (props) {
+    super(props);
+    this.state = {
+      image: '',
+      svg_height: Dimensions.get('window').height - 120,
+      svg_width: Dimensions.get('window').width,
+      isCircleMode: false,
+      color: 'yellow',
+      undoCircle: '',
+      isSVGDoneToggle: false,
+      drawing: {
+        type: '',
+        svg: ''
+      }
     };
+  }
 
   state = {
-    image: '',
-    isCircleMode: false,
-    color: 'yellow',
-    undoCircle: ''
+    
   };
 
   getColor = (color) => {
@@ -47,34 +78,87 @@ class DrawingScreen extends React.Component {
       return {
         ...state,
         color
-      }
-    })
+      };
+    });
+  }
+
+  getSVG = (type, svg) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        drawing: {
+          type,
+          svg
+        }
+      }; 
+    });
+  }
+
+  handleDoneButton = async () => {
+    this.setState((state) => {
+      return {
+        ...state,
+        isSVGDoneToggle: !this.state.isSVGDoneToggle
+      };
+    });
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.drawing.svg !== this.state.drawing.svg) {
+      const { color, svg_height, svg_width } = this.state;
+      const { imageUri, width, height } = this.props.navigation.state.params;
+      const { type, svg } = this.state.drawing;
+      this.props.navigation.navigate('UploadRouteScreen', {
+        imageUri,
+        width,
+        height,
+        color,
+        type,
+        svg,
+        svg_height,
+        svg_width
+      });
+    }
   }
 
   render() {
     const { imageUri } = this.props.navigation.state.params;
+    const { isSVGDoneToggle, svg_height, svg_width } = this.state;
+
     if (imageUri) {
       return (
         <View style={styles.container}>
           <StatusBar hidden />
-          {Dimensions.get('window') &&
+          {svg_height &&
           <DrawingLayer
             isCircleMode={this.state.isCircleMode}
             color={this.state.color}
-            height={Dimensions.get('window').height-120}
-            width={Dimensions.get('window').width}
+            height={svg_height}
+            width={svg_width}
             undoCircle={this.state.undoCircle}
+            getSVG={this.getSVG}
+            svgDone={isSVGDoneToggle}
           >
             <Image
               source={{ uri: imageUri }}
               style={{
                 position: 'absolute',
-                height: Dimensions.get('window').height-120,
-                width: Dimensions.get('window').width,
+                height: svg_height,
+                width: svg_width,
               }}>
             </Image>
           </DrawingLayer>
           }
+          <TouchableOpacity
+            style={styles.button_done}
+            onPress={() => this.handleDoneButton()}
+          >
+            <Text
+              style={styles.text_button_done}
+            >
+              Done
+            </Text>
+          </TouchableOpacity>
           <View
             style={styles.container_bottom}>
             <TouchableOpacity
@@ -84,8 +168,8 @@ class DrawingScreen extends React.Component {
                     return {
                       ...state,
                       isCircleMode: !state.isCircleMode
-                    }
-                  })
+                    };
+                  });
                 }
               }}
             >
@@ -99,7 +183,7 @@ class DrawingScreen extends React.Component {
             </TouchableOpacity>
             <ColorWheel
               size={110}
-              colorArray={['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow']}
+              colorArray={['red', 'hotpink', 'blue', 'springgreen', 'yellow']}
               getColor={this.getColor}
             />
             <View>
@@ -110,8 +194,8 @@ class DrawingScreen extends React.Component {
                       return {
                         ...state,
                         undoCircle: Date.now()
-                      }
-                    })
+                      };
+                    });
                   }
                 }}
               >
@@ -133,8 +217,8 @@ class DrawingScreen extends React.Component {
                       return {
                         ...state,
                         isCircleMode: !state.isCircleMode
-                      }
-                    })
+                      };
+                    });
                   }
                 }}
               >

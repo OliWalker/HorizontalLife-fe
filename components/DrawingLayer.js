@@ -17,12 +17,7 @@ class DrawingLayer extends React.Component {
     linePoints: []
   }
 
-  onStartShouldSetResponder = (evt) => {
-    if (evt.nativeEvent.touches.length === this.props.numberOfTouches) {
-      return true;
-    }
-    return false;
-  }
+  onStartShouldSetResponder = evt => evt.nativeEvent.touches.length === this.props.numberOfTouches;
 
   onResponderRelease = (evt) => {
     if (this.props.isCircleMode) {
@@ -117,6 +112,9 @@ class DrawingLayer extends React.Component {
 
   componentDidUpdate (prevProps) {
     const { points } = this.state;
+    if (prevProps.svgDone !== this.props.svgDone) {
+      this.updateSVG()
+    }
     if (prevProps.undoCircle !== this.props.undoCircle
         && points.length > 0) {
       this.setState((state) => {
@@ -126,6 +124,13 @@ class DrawingLayer extends React.Component {
         }
       })
     }
+  }
+
+  updateSVG = () => {
+    const { points, linePath } = this.state;
+    this.props.isCircleMode ?
+      this.props.getSVG('circle', points)
+      : this.props.getSVG('line', linePath);
   }
 
   render() {

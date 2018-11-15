@@ -4,6 +4,11 @@ import { Svg } from 'expo';
 
 class ColorWheel extends React.Component {
 
+  static defaultProps = {
+    size: 200,
+    colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow'],
+  }
+
   state = {
     selectedColor: 'yellow',
   }
@@ -14,55 +19,46 @@ class ColorWheel extends React.Component {
     });
     this.props.getColor(color);
   }
-
-
+  
   renderPaths = () => {
     //https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#Arcs
     const { colorArray } = this.props;
     const  { size } = this.props;
     const strokeWidth = size * 0.15;
     const centerX = size / 2;
-    const centerY = size / 2;
+    // const centerY = size / 2;
     const radiusXY = size * 0.4;
     const xAxisRotation = 0;
     const largeArcFlag = 0;
     const sweepFlag = 0;
     const wheelPartAngle = 360 / colorArray.length;
 
+    // Evaluate X
+    // Use Math.round() because number is too small, Ex.: see cos90
+    // `* (Math.PI / 180)` to conver degrees do radians because Math.cos() accept radians as parameter
+
+    // Evaluate Y
+    //Deduct y postion from size (Container's square side) because y axis is reversed
+
+    // We only use centerX because the component is square, so centerX === centerY
+    const evalCoordinate = (angle, fn = Math.cos) => Math.round(fn(angle) * radiusXY) + centerX;
     const paths = colorArray.map((path, index) => {
 
       const color = colorArray[index]
-
-      const startNonZeroPosition = `${
-        //x
-        Math.round(
-          Math.cos(
-            (wheelPartAngle * index) * (Math.PI / 180)) * radiusXY) + centerX} ${
-        //y
-        size - (
-          Math.round(
-            Math.sin(
-              (wheelPartAngle  * index) * (Math.PI / 180)) * radiusXY) + centerY)}`;
-
+      const startAngle = (wheelPartAngle * index) * (Math.PI / 180);
+      const finalAngle = (wheelPartAngle * (index + 1)) * (Math.PI / 180);
+      const x = evalCoordinate(startAngle);
+      const y = size - evalCoordinate(startAngle, Math.sin);
+      const finalX = evalCoordinate(finalAngle);
+      const finalY = size - evalCoordinate(finalAngle, Math.sin);
+      
       //start point for the path
       const M = index === 0
         ? `${centerX + radiusXY} ${size/2}`
-        : startNonZeroPosition;
+        : `${x} ${y}`;
 
       //arc of the ellipse
-      const d = `M${M} A ${radiusXY} ${radiusXY} ${xAxisRotation} ${largeArcFlag} ${sweepFlag} ${
-        //x
-        //Use Math.round() because number is too small, Ex.: see cos90
-        Math.round(
-          // `* (Math.PI / 180)` to conver degrees do radians because Math.cos() accept radians as parameter
-          Math.cos(
-            (wheelPartAngle * (index + 1)) * (Math.PI / 180)) * radiusXY) + centerX} ${
-        //y
-        //Deduct y postion from size (Container's square side) because y axis is reversed
-        size - (
-          Math.round(
-            Math.sin(
-              (wheelPartAngle * (index + 1)) * (Math.PI / 180)) * radiusXY) + centerY)}`;
+      const d = `M${M} A ${radiusXY} ${radiusXY} ${xAxisRotation} ${largeArcFlag} ${sweepFlag} ${finalX} ${finalY}`;
       return (
         <TouchableWithoutFeedback
           key={color}
@@ -102,11 +98,6 @@ class ColorWheel extends React.Component {
     );
   }
 
-}
-
-ColorWheel.defaultProps = {
-  size: 200,
-  colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow'],
 }
 
 export default ColorWheel;
