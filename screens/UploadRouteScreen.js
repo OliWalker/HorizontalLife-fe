@@ -165,9 +165,19 @@ class UploadRouteScreen extends React.Component {
 
   handlePreviewButton = () => {
     if (this.props.navigation.state.params) {
-      const { imageUri, color, type, svg, svg_height, svg_width } = this.props.navigation.state.params;
+      const {
+        imageUri,
+        color,
+        type,
+        svg,
+        svg_height,
+        svg_width
+      } = this.props.navigation.state.params;
+      const  { routeName, grade } = this.state;
       this.props.navigation.navigate('RoutePreviewScreen', {
         imageUri,
+        routeName,
+        grade,
         color,
         type,
         svg,

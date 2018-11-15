@@ -1,6 +1,27 @@
 import React from 'react';
-import { View, Image, Dimensions } from 'react-native';
+import { View, Image, Dimensions, Text } from 'react-native';
 import { Svg } from 'expo';
+
+const styles = StyleSheet.create = ({
+  container: {
+    flex: 1
+  },
+  container_header: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
+  text_route_name: {
+    fontSize: 40,
+    fontWeight: '400',
+    marginLeft: 20,
+  },
+  text_grade: {
+    fontSize: 45,
+    marginLeft: 30
+  }
+});
 
 
 class RoutePreview extends React.Component {
@@ -9,11 +30,18 @@ class RoutePreview extends React.Component {
     header: null
   };
 
+  static defaultProps = {
+    grades: ['5', '5+', '6A', '6A+', '6B', '6B+', '6C', '6C+',
+      '7A', '7A+', '7B', '7B+', '7C', '7C+',
+      '8A', '8A+', '8B', '8B+', '8C', '8C+']
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       height: Dimensions.get('window').height,
-    }
+      width: Dimensions.get('window').width,
+    };
   }
 
   renderSVG = (color, type, svg) => {
@@ -37,34 +65,48 @@ class RoutePreview extends React.Component {
           stroke={color}
           fill='none'
         />
-      )
-      return circles
+      );
+      return circles;
     }
   }
 
   render() {
-
-    const { imageUri, color, type, svg, svg_height, svg_width } = this.props.navigation.state.params;
-    const { height } = this.state;
+    const {
+      imageUri,
+      routeName,
+      grade,
+      color,
+      type,
+      svg,
+      svg_height,
+      svg_width
+    } = this.props.navigation.state.params;
+    const { height, width } = this.state;
     return (
-      <View
-        style={{
-          backgroundColor: 'red'
-        }}
-      >
+      <View>
         {height && 
           <View
-            style={{
-              flex: 1,
-              backgroundColor: 'yellow',
-
-            }}>
+            style={styles.container}>
             <View
               style={{
-                backgroundColor: 'pink',
+                ...styles.container_header,
                 height: height-svg_height
               }}
-            ></View>
+            >
+              <Text
+                style={{
+                  ...styles.text_route_name,
+                  width: width * 0.6
+                }}
+              >
+                {routeName}
+              </Text>
+              <Text
+                style={styles.text_grade}
+              >
+                {this.props.grades[grade]}
+              </Text>
+            </View>
             <Image
               source={{ uri: imageUri }}
               style={{
@@ -74,9 +116,9 @@ class RoutePreview extends React.Component {
             </Image>
             <View
               style={{
+                position: 'absolute',
                 height: svg_height,
                 width: svg_width,
-                position: 'absolute',
                 marginTop: height - svg_height
               }}
             >
