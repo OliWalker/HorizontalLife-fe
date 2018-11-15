@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Image, Dimensions, Text } from 'react-native';
+import { View, Image, Dimensions, Text, StyleSheet } from 'react-native';
 import { Svg } from 'expo';
 
-const styles = StyleSheet.create = ({
+const styles = StyleSheet.create({
   container: {
     flex: 1
   },
@@ -22,7 +22,6 @@ const styles = StyleSheet.create = ({
     marginLeft: 30
   }
 });
-
 
 class RoutePreview extends React.Component {
 
