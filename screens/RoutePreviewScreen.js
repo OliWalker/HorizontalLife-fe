@@ -25,7 +25,7 @@ class RoutePreview extends React.Component {
           stroke={color}
           strokeWidth={2.5}
         />
-      )
+      );
     } else {
       const circles = svg.map(point =>
         <Svg.Circle

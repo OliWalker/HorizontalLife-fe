@@ -33,5 +33,8 @@ module.exports = {
     "no-multiple-empty-lines": ERROR,
     "lines-between-class-members": ERROR,
     "arrow-parens": [ERROR, "as-needed", { "requireForBlockBody": true }],
+    "max-len": [ERROR, {
+      "code": 80, "ignoreComments": true, "ignoreUrls": true }],
+    "semi": [ERROR, "always", { "omitLastInOneLineBlock": true }]
   }
 };

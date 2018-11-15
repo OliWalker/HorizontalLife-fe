@@ -66,7 +66,7 @@ class DrawingScreen extends React.Component {
         type: '',
         svg: ''
       }
-    }
+    };
   }
 
   state = {
@@ -78,8 +78,8 @@ class DrawingScreen extends React.Component {
       return {
         ...state,
         color
-      }
-    })
+      };
+    });
   }
 
   getSVG = (type, svg) => {
@@ -90,8 +90,8 @@ class DrawingScreen extends React.Component {
           type,
           svg
         }
-      } 
-    })
+      }; 
+    });
   }
 
   handleDoneButton = async () => {
@@ -99,9 +99,8 @@ class DrawingScreen extends React.Component {
       return {
         ...state,
         isSVGDoneToggle: !this.state.isSVGDoneToggle
-      }
-    })
-
+      };
+    });
   }
 
   componentDidUpdate (prevProps, prevState) {
@@ -118,7 +117,7 @@ class DrawingScreen extends React.Component {
         svg,
         svg_height,
         svg_width
-      })
+      });
     }
   }
 
@@ -169,8 +168,8 @@ class DrawingScreen extends React.Component {
                     return {
                       ...state,
                       isCircleMode: !state.isCircleMode
-                    }
-                  })
+                    };
+                  });
                 }
               }}
             >
@@ -195,8 +194,8 @@ class DrawingScreen extends React.Component {
                       return {
                         ...state,
                         undoCircle: Date.now()
-                      }
-                    })
+                      };
+                    });
                   }
                 }}
               >
@@ -218,8 +217,8 @@ class DrawingScreen extends React.Component {
                       return {
                         ...state,
                         isCircleMode: !state.isCircleMode
-                      }
-                    })
+                      };
+                    });
                   }
                 }}
               >

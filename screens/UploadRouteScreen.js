@@ -68,7 +68,7 @@ class UploadRouteScreen extends React.Component {
           title='Publish'
         />
       )
-    }
+    };
   };
 
   componentDidMount() {
@@ -78,7 +78,16 @@ class UploadRouteScreen extends React.Component {
   publishRoute = () => {
     const { routeName, chosenTags } = this.state;
     const grade = this.props.grades[this.state.grade];
-    const { imageUri, height, width, color, type, svg, svg_height, svg_width } = this.props.navigation.state.params;
+    const {
+      imageUri,
+      height,
+      width,
+      color,
+      type,
+      svg,
+      svg_height,
+      svg_width
+    } = this.props.navigation.state.params;
     console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, height, width, color, type, svg, svg_height, svg_width) //eslint-disable-line
   }
 
@@ -100,13 +109,13 @@ class UploadRouteScreen extends React.Component {
     const { chosenTags } = this.state;
     const index = chosenTags.indexOf(tag);
     if (index >= 0) {
-      const array = this.state.chosenTags
+      const array = this.state.chosenTags;
       this.setState((state) => {
         return {
           ...state,
           chosenTags: array.filter(el => el !== tag)
-        }
-      })
+        };
+      });
     } else {
       this.setState((state) => {
         return {
@@ -115,8 +124,8 @@ class UploadRouteScreen extends React.Component {
             ...state.chosenTags,
             tag
           ]
-        }
-      })
+        };
+      });
     }
   }
 
@@ -140,8 +149,8 @@ class UploadRouteScreen extends React.Component {
             </Text>
           </View>
         </TouchableOpacity>
-      )
-    })
+      );
+    });
     return tags;
   }
 
@@ -150,8 +159,8 @@ class UploadRouteScreen extends React.Component {
       return {
         ...state,
         grade: value
-      }
-    })
+      };
+    });
   }
 
   handlePreviewButton = () => {
@@ -164,7 +173,7 @@ class UploadRouteScreen extends React.Component {
         svg,
         svg_height,
         svg_width
-      })
+      });
     }
   }
 
@@ -193,7 +202,7 @@ class UploadRouteScreen extends React.Component {
                   return {
                     ...state,
                     routeName: text
-                  }
+                  };
                 })}
                 maxLength={25}
                 placeholder='Plastic tortilla'

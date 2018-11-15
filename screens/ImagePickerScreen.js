@@ -1,6 +1,13 @@
 import React from 'react';
-import { Text, View, StatusBar, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { Icon, Button } from 'react-native-elements'
+import {
+  Text,
+  View,
+  StatusBar,
+  Image,
+  TouchableOpacity,
+  StyleSheet
+} from 'react-native';
+import { Icon, Button } from 'react-native-elements';
 import { Camera, Permissions, ImagePicker } from 'expo';
 import { withNavigation } from 'react-navigation';
 
@@ -69,15 +76,16 @@ class ImagePickerScreen extends React.Component {
       return {
         ...state,
         hasCameraPermission: status === 'granted'
-      }
+      };
     });
 
-    const permissionsCameraRoll = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    const permissionsCameraRoll = await Permissions
+      .askAsync(Permissions.CAMERA_ROLL);
     this.setState((state) => {
       return {
         ...state,
         hasCameraRollPermission: permissionsCameraRoll.status === 'granted'
-      }
+      };
     });
   }
 
@@ -92,7 +100,7 @@ class ImagePickerScreen extends React.Component {
               width: data.width
             });
           }
-        })
+        });
     }
   };
 
@@ -150,7 +158,8 @@ class ImagePickerScreen extends React.Component {
                 style={styles.container_touchable_image}
               >
                 <Image
-                  source={require('../assets/images/icon-photo-gallery-48-white.png')}
+                  source={require(
+                    '../assets/images/icon-photo-gallery-48-white.png')}
                   style={styles.image_photo_gallery}
                 />
               </TouchableOpacity>
