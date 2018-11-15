@@ -154,6 +154,20 @@ class UploadRouteScreen extends React.Component {
     })
   }
 
+  handlePreviewButton = () => {
+    if (this.props.navigation.state.params) {
+      const { imageUri, color, type, svg, svg_height, svg_width } = this.props.navigation.state.params;
+      this.props.navigation.navigate('RoutePreviewScreen', {
+        imageUri,
+        color,
+        type,
+        svg,
+        svg_height,
+        svg_width
+      })
+    }
+  }
+
   render() {
     const { height, width } = Dimensions.get('window');
     if (height) {
@@ -216,8 +230,8 @@ class UploadRouteScreen extends React.Component {
             style={styles.container_bottom}
           >
             <Button
-              title='preview'
-              onPress={() => console.log('pressed preview')} //eslint-disable-line
+              title='Preview'
+              onPress={() => this.handlePreviewButton()}
             />
           </View>
         </View>
