@@ -1,20 +1,17 @@
 import React from 'react';
 import {
-  Text,
   View,
   Button,
   Platform,
   StatusBar,
   Dimensions,
-  FlatList,
-  Image,
-  TouchableOpacity
+  SectionList,
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
 
 import Colors from '../constants/Colors';
-
+import RouteListItem from '../components/RouteListItem';
 
 class RoutesScreen extends React.Component {
 
@@ -27,7 +24,28 @@ class RoutesScreen extends React.Component {
   }
   
   static defaultProps = {
-    authorized: true
+    authorized: true,
+    sections: [
+      {
+        title: 'pending', data: [
+          { route: { id: '1', name: 'Plastic tortilla', grade: '8C', new: true } },
+          { route: { id: '2', name: 'Bananas', grade: '8B', new: true } },
+          { route: { id: '3', name: 'Aloe', grade: '6A+', new: false } },
+          { route: { id: '4', name: 'Bezoya', grade: '5', new: false } },
+          { route: { id: '5', name: 'Mononoke', grade: '7C+', new: false } },
+          { route: { id: '6', name: 'Plastic tortilla', grade: '8C', new: false } },
+          { route: { id: '7', name: 'Bananas', grade: '8B', new: false } },
+          { route: { id: '8', name: 'Aloe', grade: '6A+', new: false } },
+          { route: { id: '9', name: 'Bezoya', grade: '5', new: false } },
+        ]
+      },
+      {
+        title: 'done', data: [
+          { route: { id: '16', name: 'Plastic tortilla!', grade: '8C', new: true } },
+          { route: { id: '17', name: 'Bananas!', grade: '8B', new: false } },
+        ]
+      }
+    ]
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -42,6 +60,14 @@ class RoutesScreen extends React.Component {
             disabled={!navigation.getParam('authorized')}
           />
         ) : null,
+      headerLeft: Platform.OS == 'ios'
+        ? (
+          <Button
+            // onPress={navigation.getParam('goToFiler')}
+            title='Filter'
+            color='white'
+          />
+        ) : null,
       headerStyle: {
         backgroundColor: Platform.OS == 'ios' 
           ? Colors.iosMain : Colors.androidMain,
@@ -49,7 +75,6 @@ class RoutesScreen extends React.Component {
       headerTintColor: 'white',
     };
   };
-
 
   componentDidMount() {
     this.props.navigation.setParams({
@@ -62,8 +87,6 @@ class RoutesScreen extends React.Component {
     this.props.navigation.navigate('ImagePicker');
   }
 
-  keyExtractor = item => item.route.id;
-
   renderSeparator = () => {
     return (
       <View
@@ -75,63 +98,26 @@ class RoutesScreen extends React.Component {
     );
   };
 
+  renderItem = ({ item, section }) => 
+    <RouteListItem
+      name={item.route.name}
+      grade={item.route.grade}
+      new={item.route.new}
+      done={section.title == 'done'}
+    />
+    
+
   render() {
+    const { sections } = this.props;
     return (
       <View>
         <StatusBar hidden />
-        <FlatList
+        <SectionList
           ItemSeparatorComponent={this.renderSeparator}
-          data={[
-            { route : { id: '1', name: 'Plastic tortilla', grade: '8C', new: true} },
-            { route: { id: '2', name: 'Bananas', grade: '8B', new: true } },
-            { route: { id: '3', name: 'Aloe', grade: '6A+', new: false } },
-            { route: { id: '4', name: 'Bezoya', grade: '5', new: false } },
-            { route: { id: '5', name: 'Mononoke', grade: '7C+', new: false } },
-          ]}
-          renderItem={({ item }) => 
-            <TouchableOpacity
-              style={{
-                flex: 0,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                height: 50,
-                backgroundColor: 'white',
-                alignItems: 'center',
-                paddingHorizontal: 10
-              }}
-            >
-              <View
-                style={{
-                  flex: 0,
-                  flexDirection: 'row'
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: '500'
-                  }}
-                >
-                  {item.route.name}
-                </Text>
-                {item.route.new && 
-                  <Image
-                    source={require('../assets/icons/new-50.png')}
-                    style={{
-                      height: 25,
-                      width: 25
-                    }}
-                  />}
-              </View>
-              <Text
-                style={{
-                  fontSize: 20
-                }}>
-                {item.route.grade}
-              </Text>
-            </TouchableOpacity>
-          }
-          keyExtractor={this.keyExtractor}
+          renderSectionFooter={this.renderSeparator}
+          sections={sections}
+          renderItem={this.renderItem}
+          keyExtractor={item => item.route.id}
         />      
         {Platform.OS == 'android' &&
         <ActionButton
