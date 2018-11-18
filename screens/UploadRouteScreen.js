@@ -207,22 +207,36 @@ class UploadRouteScreen extends React.Component {
             <View style={{
               height: height * 0.2
             }}>
-              <Text>
+              {/* <Text>
                 GRADE
-              </Text>
+              </Text> */}
               <Text
                 style={styles.text_grade}
               >
                 {this.props.grades[this.state.grade]}
               </Text>
-              <Slider
-                step={1}
-                minimumValue={0}
-                maximumValue={this.props.grades.length-1}
-                value={this.state.grade}
-                onValueChange={value => this.gradeUpdate(value)}              
+              <View
+                style={{
+                  flex: 0,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+                }}
               >
-              </Slider>
+                <Text>5</Text>
+                <Slider
+                  step={1}
+                  minimumValue={0}
+                  maximumValue={this.props.grades.length-1}
+                  value={this.state.grade}
+                  onValueChange={value => this.gradeUpdate(value)}
+                  style={{
+                    width: width * 0.8
+                  }}             
+                >
+                </Slider>
+                <Text>8C+</Text>
+              </View>
             </View>
             <View
               style={styles.container_tags}
