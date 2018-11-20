@@ -7,7 +7,7 @@ import {
   ScrollView,
   TouchableOpacity
 } from 'react-native';
-import { Card, ListItem, Button, Icon, Divider } from 'react-native-elements';
+import { Card, Divider } from 'react-native-elements';
 
 import data from '../data';
 
