@@ -11,15 +11,28 @@ export default {
   },
   Gym: {
     gymName: 'Chris Sharma',
-    logo: '',
-    motto: '',
-    adress: '',
+    logo:
+      'http://www.sharmaclimbingbcn.com/wp-content/themes/sharma-theme/img/logo.png',
+    picture:
+      'https://www.walltopia.com/media/k2/items/cache/3e8e1949f1c3300c7f060866b463e01c_L.jpg',
+    motto: 'Just go and climb it.',
+    address: '',
     city: 'barcelona',
     country: 'spain',
     latlng: { lat: 41.01, lng: 43.03 },
     members: [],
     sections: [],
     routes: [],
+    stats: [
+      //{ routeCount: 36 },
+      //{ sectionCount: 8 },
+      { user: 98 },
+      { gym: true },
+      { yoga: true },
+      { changeTime: 'bi-weekly' },
+      //{ food: true },
+      { beer: true }
+    ],
     map: '#######'
   },
   Section: {
