@@ -24,13 +24,13 @@ export default {
     sections: [],
     routes: [],
     stats: [
-      { routeCount: 36 },
-      { sectionCount: 8 },
-      { memberCount: 98 },
+      //{ routeCount: 36 },
+      //{ sectionCount: 8 },
+      { user: 98 },
       { gym: true },
       { yoga: true },
       { changeTime: 'bi-weekly' },
-      { food: true },
+      //{ food: true },
       { beer: true }
     ],
     map: '#######'

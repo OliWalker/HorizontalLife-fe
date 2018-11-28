@@ -13,7 +13,9 @@ import OpenTimesCard from './OpenTimesCard';
 
 export default class GymStats extends React.Component {
   state = { openTimes: false };
+
   hideCard = () => this.setState({ openTimes: false });
+
   showCard = () => this.setState({ openTimes: true });
 
   render() {
@@ -39,27 +41,28 @@ export default class GymStats extends React.Component {
           imageSize={40}
           style={{ paddingVertical: 10 }}
         />
+
         <View style={styles.ratingsBox}>
-          {stats.map((stat, i) => (
-            <View key={i} style={styles.stat}>
-              <Image
-                source={require('../assets/images/robot-dev.png')}
-                style={styles.icon}
-              />
-              <Text style={styles.statText}>{Object.values(stat)[0]}</Text>
-            </View>
-          ))}
-        </View>
-        <View style={styles.ratingsBox}>
-          {stats.map((stat, i) => (
-            <View key={i} style={styles.stat}>
-              <Image
-                source={require('../assets/images/robot-dev.png')}
-                style={styles.icon}
-              />
-              <Text style={styles.statText}>{Object.values(stat)[0]}</Text>
-            </View>
-          ))}
+          {stats.map((stat, i) => {
+            {
+              /* const icon = Object.keys(stat)[0].toString();
+            const path = `../assets/icons/${icon}.png`;
+            const source = require(path) || require('../assets/icons/yoga.png'); */
+            }
+            return (
+              <View key={i} style={styles.stat}>
+                <Image
+                  source={{
+                    uri: 'asset:icons/yoga.png',
+                    crop: { left: 10, top: 50, width: 20, height: 40 }
+                  }}
+                />
+                <Text style={styles.statText}>
+                  {Object.values(stat)[0].toString()}
+                </Text>
+              </View>
+            );
+          })}
         </View>
       </ScrollView>
     );
