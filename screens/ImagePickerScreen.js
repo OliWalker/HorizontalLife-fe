@@ -5,7 +5,8 @@ import {
   StatusBar,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 import { Icon, Button } from 'react-native-elements';
 import { Camera, Permissions, ImagePicker } from 'expo';
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   },
   container_bottom: {
     flex: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0)',
+    backgroundColor: 'black',
     height: 120,
     justifyContent: 'center',
     alignItems: 'center',
@@ -135,7 +136,10 @@ class ImagePickerScreen extends React.Component {
           <StatusBar hidden />
 
           <Camera
-            style={styles.camera}
+            style={{
+              ...styles.camera,
+              height: Dimensions.get('window').height - 120,
+            }}
             type={this.state.type}
             ref={ref => this.camera = ref }
           >
