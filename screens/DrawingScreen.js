@@ -17,7 +17,7 @@ import DrawingLayer from '../components/DrawingLayer';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   container_bottom: {
     flex: 0,
@@ -124,7 +124,6 @@ class DrawingScreen extends React.Component {
   render() {
     const { imageUri } = this.props.navigation.state.params;
     const { isSVGDoneToggle, svg_height, svg_width } = this.state;
-
     if (imageUri) {
       return (
         <View style={styles.container}>
@@ -145,7 +144,8 @@ class DrawingScreen extends React.Component {
                 position: 'absolute',
                 height: svg_height,
                 width: svg_width,
-              }}>
+              }}
+            >
             </Image>
           </DrawingLayer>
           }

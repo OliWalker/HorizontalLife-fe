@@ -6,15 +6,17 @@ import {
   TextInput,
   Dimensions,
   Slider,
-  TouchableOpacity,
   StyleSheet
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
+import Chip from '../components/Chip';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    backgroundColor: 'white'
   },
   container_top: {
     paddingTop: 10,
@@ -39,17 +41,6 @@ const styles = StyleSheet.create({
     flex: 0,
     flexWrap: 'wrap',
     flexDirection: 'row'
-  },
-  tag: {
-    height: 30,
-    flex: 0,
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
-    paddingHorizontal: 10,
-    margin: 3,
-    borderWidth: 2,
-    borderRadius: 50,
-    borderColor: 'gray'
   },
   container_bottom: {
     backgroundColor: 'white',
@@ -132,23 +123,17 @@ class UploadRouteScreen extends React.Component {
   renderTags = () => {
     const tags = this.props.tags.map((tag) => {
       const isSelected = this.state.chosenTags.includes(tag);
-      const color = isSelected ? 'yellow' : 'white';
+      const backgroundColor = isSelected 
+        ? 'rgba(52, 143, 249, 0.34)' : '#E6E6E8';
+      const color = isSelected ? '#007AFF' : '#807C7C';
       return (
-        <TouchableOpacity
+        <Chip
           key={tag}
+          name={tag}
+          color={color}
+          backgroundColor={backgroundColor}
           onPress={() => this.chooseTag(tag)}
-        >
-          <View
-            style={{
-              ...styles.tag,
-              backgroundColor: color,
-            }}
-          >
-            <Text>
-              {tag}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        />
       );
     });
     return tags;
@@ -222,22 +207,36 @@ class UploadRouteScreen extends React.Component {
             <View style={{
               height: height * 0.2
             }}>
-              <Text>
+              {/* <Text>
                 GRADE
-              </Text>
+              </Text> */}
               <Text
                 style={styles.text_grade}
               >
                 {this.props.grades[this.state.grade]}
               </Text>
-              <Slider
-                step={1}
-                minimumValue={0}
-                maximumValue={this.props.grades.length-1}
-                value={this.state.grade}
-                onValueChange={value => this.gradeUpdate(value)}              
+              <View
+                style={{
+                  flex: 0,
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  alignItems: 'center'
+                }}
               >
-              </Slider>
+                <Text>5</Text>
+                <Slider
+                  step={1}
+                  minimumValue={0}
+                  maximumValue={this.props.grades.length-1}
+                  value={this.state.grade}
+                  onValueChange={value => this.gradeUpdate(value)}
+                  style={{
+                    width: width * 0.8
+                  }}             
+                >
+                </Slider>
+                <Text>8C+</Text>
+              </View>
             </View>
             <View
               style={styles.container_tags}
