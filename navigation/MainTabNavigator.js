@@ -7,6 +7,8 @@ import {
 
 import TabBarIcon from '../components/TabBarIcon';
 import GymListScreen from '../screens/GymListScreen';
+import HomeGymScreen from '../screens/HomeGymScreen';
+
 import RoutesScreen from '../screens/RoutesScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ImagePickerScreen from '../screens/ImagePickerScreen';
@@ -17,7 +19,8 @@ import RoutePreviewScreen from '../screens/RoutePreviewScreen';
 // import UnusedScreen from '../screens/UnusedScreen';
 
 const GymsStack = createStackNavigator({
-  Gyms: GymListScreen
+  Gyms: GymListScreen,
+  HomeGymScreen: { screen: HomeGymScreen }
 });
 
 GymsStack.navigationOptions = {
