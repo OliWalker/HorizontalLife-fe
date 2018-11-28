@@ -6,12 +6,22 @@ import {
   StatusBar,
   Dimensions,
   SectionList,
+  Text
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import Colors from '../constants/Colors';
 import RouteListItem from '../components/RouteListItem';
+
+const GET_ROUTES = gql`
+{
+  all_routes {
+    name
+  }
+}`;
 
 class RoutesScreen extends React.Component {
 
@@ -112,13 +122,22 @@ class RoutesScreen extends React.Component {
     return (
       <View>
         <StatusBar hidden />
-        <SectionList
-          ItemSeparatorComponent={this.renderSeparator}
-          renderSectionFooter={this.renderSeparator}
-          sections={sections}
-          renderItem={this.renderItem}
-          keyExtractor={item => item.route.id}
-        />      
+        <Query query={GET_ROUTES}>
+          {({ loading, error, data }) => {
+            if (loading) return <Text>Loading...</Text>;
+            if (error) return <Text>`Error! ${JSON.stringify(error)}`</Text>;
+            if (data) console.log(data)
+            return (
+              <SectionList
+                ItemSeparatorComponent={this.renderSeparator}
+                renderSectionFooter={this.renderSeparator}
+                sections={sections}
+                renderItem={this.renderItem}
+                keyExtractor={item => item.route.id}
+              />      
+            )
+          }}
+        </Query>
         {Platform.OS == 'android' &&
         <ActionButton
           buttonColor={Colors.androidMain}
