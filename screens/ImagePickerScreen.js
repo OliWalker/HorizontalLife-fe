@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
     width: 40
   },
   button_camera: {
-    backgroundColor: 'rgba(255, 255, 255, 0)',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
     width: 60,
     height: 60,
-    borderColor: 'rgba(255, 255, 255, 1)',
+    borderColor: 'darkgrey',
     borderWidth: 6,
     borderRadius: 50,
   }
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
 
 class ImagePickerScreen extends React.Component {
 
-    //this is the top bar
     static navigationOptions = {
       header: null
     };
