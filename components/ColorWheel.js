@@ -44,7 +44,7 @@ class ColorWheel extends React.Component {
     const evalCoordinate = (angle, fn = Math.cos) => Math.round(fn(angle) * radiusXY) + centerX;
     const paths = colorArray.map((path, index) => {
 
-      const color = colorArray[index]
+      const color = colorArray[index];
       const startAngle = (wheelPartAngle * index) * (Math.PI / 180);
       const finalAngle = (wheelPartAngle * (index + 1)) * (Math.PI / 180);
       const x = evalCoordinate(startAngle);
@@ -71,8 +71,8 @@ class ColorWheel extends React.Component {
             strokeWidth={strokeWidth}
           />
         </TouchableWithoutFeedback>
-      )
-    })
+      );
+    });
     return  paths;
   }
 
@@ -81,7 +81,7 @@ class ColorWheel extends React.Component {
     const { size } = this.props;
     const centerX = size / 2;
     const centerY = size / 2;
-    const radiusInnerCircle = size * 0.25
+    const radiusInnerCircle = size * 0.25;
     return (
       <Svg
         height={size}

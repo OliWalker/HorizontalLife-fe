@@ -3,16 +3,14 @@ import {
   View,
   Text,
   Button,
-  TextInput,
   Dimensions,
   Slider,
   StyleSheet,
-  Platform
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Chip from '../components/Chip';
-import colors from '../constants/Colors';
+import FlatTextInput from '../components/FlatTextInput';
 
 class UploadRouteScreen extends React.Component {
 
@@ -59,7 +57,16 @@ class UploadRouteScreen extends React.Component {
   state = {
     routeName: '',
     selectedGradeIndex: 0,
-    chosenTags: []
+    chosenTags: [],
+  }
+
+  getText = (text) => {
+    this.setState((state) => {
+      return {
+        ...state,
+        routeName: text
+      };
+    });
   }
 
   chooseTag = (tag) => {
@@ -146,34 +153,13 @@ class UploadRouteScreen extends React.Component {
             ...styles.container_top,
             height: height * 0.75,
           }}>
-            <Text
-              style={styles.input_name_label}
-            >
-              {this.state.routeName && 'Route\'s name'}
-            </Text>
-           
-          
-            <View style={{
-              ...styles.container_name,
-              height: height * 0.1
-            }}>
-              <TextInput
-                style={{
-                  ...styles.container_input_name,
-                  width: width * 0.6
-                }}
-                onChangeText={text => this.setState((state) => {
-                  return {
-                    ...state,
-                    routeName: text
-                  };
-                })}
-                maxLength={25}
-                placeholder='Witness the Fitness'
-                placeholderTextColor='rgba(128, 124, 124, 1)'
-                underlineColorAndroid='transparent'
-              />
-            </View>
+            <FlatTextInput
+              height={height * 0.1}
+              width={width * 0.6}
+              placeholder='Witness the Fitness'
+              label={this.state.routeName && 'Route\'s name'}
+              getText={this.getText}
+            />
             <View style={{
               height: height * 0.2
             }}>
@@ -220,9 +206,6 @@ class UploadRouteScreen extends React.Component {
   }
 }
 
-const platformMainColor = Platform.OS == 'ios'
-  ? colors.iosMain : colors.androidMain;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -232,28 +215,6 @@ const styles = StyleSheet.create({
   container_top: {
     marginTop: 25,
     paddingHorizontal: 10,
-  },
-  container_name: {
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomColor: platformMainColor,
-    borderBottomWidth: 2,
-    borderRadius: 6,
-    backgroundColor: 'rgba(230, 230, 232, 1)',
-  },
-  input_name_label: {
-    position: 'absolute',
-    marginTop: -16,
-    paddingLeft: 16,
-    fontSize: 12,
-    color: platformMainColor
-  },
-  container_input_name: {
-    height: 32,
-    alignSelf: 'center',
-    marginHorizontal: 5,
-    fontSize: 18
   },
   container_slider: {
     flex: 0,
