@@ -2,14 +2,6 @@ import React from 'react';
 import { View, Image, Dimensions, StyleSheet } from 'react-native';
 import { Svg } from 'expo';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'black',
-    justifyContent: 'center'
-  },
-});
-
 class RoutePreview extends React.Component {
 
   static navigationOptions = {
@@ -91,5 +83,13 @@ class RoutePreview extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center'
+  },
+});
 
 export default RoutePreview;

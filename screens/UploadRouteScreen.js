@@ -14,62 +14,6 @@ import { withNavigation } from 'react-navigation';
 import Chip from '../components/Chip';
 import colors from '../constants/Colors';
 
-const platformMainColor = Platform.OS == 'ios'
-  ? colors.iosMain : colors.androidMain;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: 'rgba(245, 245, 245, 1)'
-  },
-  container_top: {
-    marginTop: 25,
-    paddingHorizontal: 10,
-  },
-  container_name: {
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderBottomColor: platformMainColor,
-    borderBottomWidth: 2,
-    borderRadius: 6,
-    backgroundColor: 'rgba(230, 230, 232, 1)',
-  },
-  input_name_label: {
-    position: 'absolute',
-    marginTop: -16,
-    paddingLeft: 16,
-    fontSize: 12,
-    color: platformMainColor
-  },
-  container_input_name: {
-    height: 32,
-    alignSelf: 'center',
-    marginHorizontal: 5,
-    fontSize: 18
-  },
-  container_slider: {
-    flex: 0,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center'
-  },
-  text_grade: {
-    paddingTop: 10,
-    alignSelf: 'center',
-    fontSize: 50
-  },
-  container_tags: {
-    flex: 0,
-    flexWrap: 'wrap',
-    flexDirection: 'row'
-  },
-  container_bottom: {
-    backgroundColor: 'rgba(245, 245, 245, 1)'
-  }
-});
-
 class UploadRouteScreen extends React.Component {
 
   static navigationOptions = ({ navigation }) => {
@@ -275,5 +219,62 @@ class UploadRouteScreen extends React.Component {
     }
   }
 }
+
+const platformMainColor = Platform.OS == 'ios'
+  ? colors.iosMain : colors.androidMain;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(245, 245, 245, 1)'
+  },
+  container_top: {
+    marginTop: 25,
+    paddingHorizontal: 10,
+  },
+  container_name: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderBottomColor: platformMainColor,
+    borderBottomWidth: 2,
+    borderRadius: 6,
+    backgroundColor: 'rgba(230, 230, 232, 1)',
+  },
+  input_name_label: {
+    position: 'absolute',
+    marginTop: -16,
+    paddingLeft: 16,
+    fontSize: 12,
+    color: platformMainColor
+  },
+  container_input_name: {
+    height: 32,
+    alignSelf: 'center',
+    marginHorizontal: 5,
+    fontSize: 18
+  },
+  container_slider: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  text_grade: {
+    paddingTop: 10,
+    alignSelf: 'center',
+    fontSize: 50
+  },
+  container_tags: {
+    flex: 0,
+    flexWrap: 'wrap',
+    flexDirection: 'row'
+  },
+  container_bottom: {
+    backgroundColor: 'rgba(245, 245, 245, 1)'
+  }
+});
+
 
 export default withNavigation(UploadRouteScreen);
