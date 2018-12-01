@@ -6,34 +6,57 @@ import {
   TextInput,
   Dimensions,
   Slider,
-  StyleSheet
+  StyleSheet,
+  Platform
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import Chip from '../components/Chip';
+import colors from '../constants/Colors';
+
+const platformMainColor = Platform.OS == 'ios'
+  ? colors.iosMain : colors.androidMain;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'space-between',
-    backgroundColor: 'white'
+    backgroundColor: 'rgba(245, 245, 245, 1)'
   },
   container_top: {
-    paddingTop: 10,
-    paddingHorizontal: 10
+    marginTop: 25,
+    paddingHorizontal: 10,
   },
   container_name: {
     flex: 0,
     flexDirection: 'row',
-    alignItems: 'baseline'
+    alignItems: 'center',
+    borderBottomColor: platformMainColor,
+    borderBottomWidth: 2,
+    borderRadius: 6,
+    backgroundColor: 'rgba(230, 230, 232, 1)',
+  },
+  input_name_label: {
+    position: 'absolute',
+    marginTop: -16,
+    paddingLeft: 16,
+    fontSize: 12,
+    color: platformMainColor
   },
   container_input_name: {
-    height: 40,
-    marginLeft: 10,
-    borderColor: 'grey',
-    borderWidth: 1
+    height: 32,
+    alignSelf: 'center',
+    marginHorizontal: 5,
+    fontSize: 18
+  },
+  container_slider: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center'
   },
   text_grade: {
+    paddingTop: 10,
     alignSelf: 'center',
     fontSize: 50
   },
@@ -43,8 +66,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   container_bottom: {
-    backgroundColor: 'white',
-    shadowColor: 'black'
+    backgroundColor: 'rgba(245, 245, 245, 1)'
   }
 });
 
@@ -67,8 +89,8 @@ class UploadRouteScreen extends React.Component {
   }
 
   publishRoute = () => {
-    const { routeName, chosenTags } = this.state;
-    const grade = this.props.grades[this.state.grade];
+    const { routeName, chosenTags, selectedGradeIndex } = this.state;
+    const grade = this.props.grades[selectedGradeIndex];
     const {
       imageUri,
       height,
@@ -92,7 +114,7 @@ class UploadRouteScreen extends React.Component {
 
   state = {
     routeName: '',
-    grade: 0,
+    selectedGradeIndex: 0,
     chosenTags: []
   }
 
@@ -124,8 +146,9 @@ class UploadRouteScreen extends React.Component {
     const tags = this.props.tags.map((tag) => {
       const isSelected = this.state.chosenTags.includes(tag);
       const backgroundColor = isSelected 
-        ? 'rgba(52, 143, 249, 0.34)' : '#E6E6E8';
-      const color = isSelected ? '#007AFF' : '#807C7C';
+        ? 'rgba(52, 143, 249, 0.34)' : 'rgba(230, 230, 232, 1)';
+      const color = isSelected 
+        ? 'rgba(0, 122, 255, 1)' : 'rgba(128, 124, 124, 1)';
       return (
         <Chip
           key={tag}
@@ -143,7 +166,7 @@ class UploadRouteScreen extends React.Component {
     this.setState((state) => {
       return {
         ...state,
-        grade: value
+        selectedGradeIndex: value
       };
     });
   }
@@ -171,6 +194,7 @@ class UploadRouteScreen extends React.Component {
 
   render() {
     const { height, width } = Dimensions.get('window');
+    const { grades } = this.props;
     if (height) {
       return (
         <View style={styles.container}>
@@ -178,13 +202,17 @@ class UploadRouteScreen extends React.Component {
             ...styles.container_top,
             height: height * 0.75,
           }}>
+            <Text
+              style={styles.input_name_label}
+            >
+              {this.state.routeName && 'Route\'s name'}
+            </Text>
+           
+          
             <View style={{
               ...styles.container_name,
               height: height * 0.1
             }}>
-              <Text>
-                NAME
-              </Text>
               <TextInput
                 style={{
                   ...styles.container_input_name,
@@ -197,42 +225,35 @@ class UploadRouteScreen extends React.Component {
                   };
                 })}
                 maxLength={25}
-                placeholder='Plastic tortilla'
-                placeholderTextColor='grey'
+                placeholder='Witness the Fitness'
+                placeholderTextColor='rgba(128, 124, 124, 1)'
+                underlineColorAndroid='transparent'
               />
             </View>
             <View style={{
               height: height * 0.2
             }}>
-              {/* <Text>
-                GRADE
-              </Text> */}
               <Text
                 style={styles.text_grade}
               >
-                {this.props.grades[this.state.grade]}
+                {grades[this.state.selectedGradeIndex]}
               </Text>
               <View
-                style={{
-                  flex: 0,
-                  flexDirection: 'row',
-                  justifyContent: 'space-around',
-                  alignItems: 'center'
-                }}
+                style={styles.container_slider}
               >
-                <Text>5</Text>
+                <Text>{grades[0]}</Text>
                 <Slider
                   step={1}
                   minimumValue={0}
-                  maximumValue={this.props.grades.length-1}
-                  value={this.state.grade}
+                  maximumValue={grades.length-1}
+                  value={this.state.selectedGradeIndex}
                   onValueChange={value => this.gradeUpdate(value)}
                   style={{
                     width: width * 0.8
                   }}             
                 >
                 </Slider>
-                <Text>8C+</Text>
+                <Text>{grades[grades.length-1]}</Text>
               </View>
             </View>
             <View
