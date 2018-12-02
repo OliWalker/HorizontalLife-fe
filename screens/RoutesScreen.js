@@ -6,7 +6,8 @@ import {
   StatusBar,
   Dimensions,
   SectionList,
-  Text
+  Text,
+  ActivityIndicator
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
@@ -16,10 +17,15 @@ import { Query } from 'react-apollo';
 import Colors from '../constants/Colors';
 import RouteListItem from '../components/RouteListItem';
 
+const platformMainColor = Platform.OS == 'ios'
+  ? Colors.iosMain : Colors.androidMain;
+
 const GET_ROUTES = gql`
 {
   all_routes {
+    _id
     name
+    grade_routesetter
   }
 }`;
 
@@ -110,9 +116,9 @@ class RoutesScreen extends React.Component {
 
   renderItem = ({ item, section }) => 
     <RouteListItem
-      name={item.route.name}
-      grade={item.route.grade}
-      new={item.route.new}
+      name={item.name}
+      grade={item.grade_routesetter}
+      new={item.new}
       done={section.title == 'done'}
     />
     
@@ -120,22 +126,41 @@ class RoutesScreen extends React.Component {
   render() {
     const { sections } = this.props;
     return (
-      <View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center'
+        }}
+      >
         <StatusBar hidden />
         <Query query={GET_ROUTES}>
           {({ loading, error, data }) => {
-            if (loading) return <Text>Loading...</Text>;
+            if (loading) return (
+              <ActivityIndicator
+                size='large'
+                color={platformMainColor}
+                style={{
+                  
+                }}
+              />
+            );
             if (error) return <Text>`Error! ${JSON.stringify(error)}`</Text>;
-            if (data) console.log(data)
-            return (
-              <SectionList
-                ItemSeparatorComponent={this.renderSeparator}
-                renderSectionFooter={this.renderSeparator}
-                sections={sections}
-                renderItem={this.renderItem}
-                keyExtractor={item => item.route.id}
-              />      
-            )
+            if (data) {
+              const routes = [{
+                data: data.all_routes,
+                title: 'pending'
+              }];
+              console.log(routes);
+              return (
+                <SectionList
+                  ItemSeparatorComponent={this.renderSeparator}
+                  renderSectionFooter={this.renderSeparator}
+                  sections={routes}
+                  renderItem={this.renderItem}
+                  keyExtractor={item => item._id}
+                />      
+              );
+            }
           }}
         </Query>
         {Platform.OS == 'android' &&

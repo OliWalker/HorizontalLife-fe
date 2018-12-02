@@ -5,8 +5,10 @@ import AppNavigator from './navigation/AppNavigator';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 
+import config from './config';
+
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql'
+  uri: config.BE_URL
 });
 
 export default class App extends React.Component {
