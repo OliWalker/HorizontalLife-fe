@@ -6,14 +6,22 @@ import {
   Dimensions,
   Slider,
   StyleSheet,
+  ActivityIndicator,
+  Platform
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 import Chip from '../components/Chip';
 import FlatTextInput from '../components/FlatTextInput';
 import FirebaseClass from '../Firebase';
+import colors from '../constants/Colors';
+// import graphql from 'graphql';
 
 const Firebase = new FirebaseClass();
+const platformMainColor = Platform.OS == 'ios'
+  ? colors.iosMain : colors.androidMain;
 
 class UploadRouteScreen extends React.Component {
 
@@ -42,18 +50,47 @@ class UploadRouteScreen extends React.Component {
       width,
       color,
       type,
-      svg,
       svg_height,
       svg_width
     } = this.props.navigation.state.params;
-    console.log(imageUri);
-    if (imageUri && routeName) Firebase.post(imageUri, routeName);
-    console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, height, width, color, type, svg, svg_height, svg_width) //eslint-disable-line
+    const svg = (type == 'line') ? this.props.navigation.state.params.svg : '';
+    const svg_points = (type == 'circle')
+      ? this.props.navigation.state.params.svg : null;
+    this.setState((state) => {
+      return {
+        ...state,
+        loading: true
+      };
+    });
+    Firebase.post(imageUri, routeName)
+      .then((uri) => {
+        this.props.createNewRoute(routeName, '5c041778d8198c394db5649c',
+          grade, uri,height, width, svg, svg_points, svg_height, svg_width,
+          color, type, chosenTags)
+          .then((data) => {
+            this.setState((state) => {
+              return {
+                ...state,
+                loading: false
+              };
+            });
+            alert(data.createRoute.route.name);
+          });
+      })
+      .catch((error) => {
+        this.setState((state) => {
+          return {
+            ...state,
+            loading: false
+          };
+        });
+        console.error(error);
+      });
   }
 
   static defaultProps = {
-    tags: ['technical', 'powerfull', 'flexibility', 'overhang',
-      'finger strength', 'balance', 'heel hook', 'endurance'],
+    tags: ['TECHNICAL', 'POWERFULL', 'FLEXIBILITY', 'OVERHANG',
+      'FINGER_STRENGTH', 'BALANCE', 'HEEL_HOOK', 'ENDURANCE'],
     grades: ['5', '5+', '6A', '6A+', '6B', '6B+', '6C', '6C+',
       '7A', '7A+', '7B', '7B+', '7C', '7C+',
       '8A', '8A+', '8B', '8B+', '8C', '8C+']
@@ -63,6 +100,7 @@ class UploadRouteScreen extends React.Component {
     routeName: '',
     selectedGradeIndex: 0,
     chosenTags: [],
+    loading: false
   }
 
   getText = (text) => {
@@ -105,10 +143,11 @@ class UploadRouteScreen extends React.Component {
         ? 'rgba(52, 143, 249, 0.34)' : 'rgba(230, 230, 232, 1)';
       const color = isSelected 
         ? 'rgba(0, 122, 255, 1)' : 'rgba(128, 124, 124, 1)';
+      const name = tag.toLowerCase().replace('_', ' ');
       return (
         <Chip
           key={tag}
-          name={tag}
+          name={name}
           color={color}
           backgroundColor={backgroundColor}
           onPress={() => this.chooseTag(tag)}
@@ -151,9 +190,15 @@ class UploadRouteScreen extends React.Component {
   render() {
     const { height, width } = Dimensions.get('window');
     const { grades } = this.props;
+    const { loading } = this.state;
     if (height) {
       return (
         <View style={styles.container}>
+          <ActivityIndicator
+            size='large'
+            color={platformMainColor}
+            animating={loading}
+          />
           <View style={{
             ...styles.container_top,
             height: height * 0.75,
@@ -242,5 +287,64 @@ const styles = StyleSheet.create({
   }
 });
 
+const CREATE_ROUTE = gql`
+  mutation createRoute(
+      $name: String!,
+      $gym_id: ID!,
+      $grade_routesetter: String!,
+      $img_url: String!,
+      $img_height: Int!,
+      $img_width: Int!,
+      $svg: String,
+      $svg_points: [CircleInput],
+      $svg_height: Int!,
+      $svg_width: Int!,
+      $svg_color: String!,
+      $svg_type: String!,
+      $tags: [Tag]
+    ) {
+    createRoute(route: {
+      name: $name,
+      gym_id: $gym_id,
+      grade_routesetter: $grade_routesetter,
+      img_url: $img_url,
+      img_height: $img_height,
+      img_width: $img_width,
+      svg: $svg,
+      svg_points: $svg_points,
+      svg_height: $svg_height,
+      svg_width: $svg_width,
+      svg_color: $svg_color,
+      svg_type: $svg_type,
+      tags: $tags
+    }
+    ) {
+      route {
+        name
+      }
+    }
+  }
+`;
 
-export default withNavigation(UploadRouteScreen);
+const UploadRouteScreenData = graphql(CREATE_ROUTE, {
+  props: ({ mutate }) => ({
+    createNewRoute: (name, gym_id, grade_routesetter, img_url,
+      img_height, img_width, svg, svg_points, svg_height, svg_width,
+      svg_color, svg_type, tags) => mutate({
+      variables: {
+        name, gym_id, grade_routesetter, img_url, img_height,
+        img_width, svg, svg_points, svg_height, svg_width,
+        svg_color, svg_type, tags
+      },
+      optimisticResponse: {
+        createRoute: {
+          route: {
+            name
+          },
+        }
+      }
+    })
+  })
+})(UploadRouteScreen);
+
+export default withNavigation(UploadRouteScreenData);

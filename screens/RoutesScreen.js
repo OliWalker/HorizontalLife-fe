@@ -139,9 +139,6 @@ class RoutesScreen extends React.Component {
               <ActivityIndicator
                 size='large'
                 color={platformMainColor}
-                style={{
-                  
-                }}
               />
             );
             if (error) return <Text>`Error! ${JSON.stringify(error)}`</Text>;
