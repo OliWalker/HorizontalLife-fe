@@ -11,6 +11,9 @@ import { withNavigation } from 'react-navigation';
 
 import Chip from '../components/Chip';
 import FlatTextInput from '../components/FlatTextInput';
+import FirebaseClass from '../Firebase';
+
+const Firebase = new FirebaseClass();
 
 class UploadRouteScreen extends React.Component {
 
@@ -43,6 +46,8 @@ class UploadRouteScreen extends React.Component {
       svg_height,
       svg_width
     } = this.props.navigation.state.params;
+    console.log(imageUri);
+    if (imageUri && routeName) Firebase.post(imageUri, routeName);
     console.log('DATA TO PUBLISH===>', routeName, chosenTags, grade, imageUri, height, width, color, type, svg, svg_height, svg_width) //eslint-disable-line
   }
 
