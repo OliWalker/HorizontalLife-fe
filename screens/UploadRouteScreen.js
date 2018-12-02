@@ -195,11 +195,6 @@ class UploadRouteScreen extends React.Component {
     if (height) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator
-            size='large'
-            color={platformMainColor}
-            animating={loading}
-          />
           <View style={{
             ...styles.container_top,
             height: height * 0.75,
@@ -251,6 +246,23 @@ class UploadRouteScreen extends React.Component {
               onPress={() => this.handlePreviewButton()}
             />
           </View>
+          {loading &&
+            <View
+              style={{
+                position: 'absolute',
+                flex: 1,
+                justifyContent: 'center',
+                height,
+                width,
+                backgroundColor: 'rgba(245, 245, 245, 0.8)'
+              }}
+            >
+              <ActivityIndicator
+                size='large'
+                color={platformMainColor}
+                animating={true}
+              />
+            </View>}
         </View>
       );
     }
