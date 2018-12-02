@@ -17,7 +17,6 @@ import Chip from '../components/Chip';
 import FlatTextInput from '../components/FlatTextInput';
 import FirebaseClass from '../Firebase';
 import colors from '../constants/Colors';
-// import graphql from 'graphql';
 
 const Firebase = new FirebaseClass();
 const platformMainColor = Platform.OS == 'ios'
@@ -68,13 +67,15 @@ class UploadRouteScreen extends React.Component {
           grade, uri,height, width, svg, svg_points, svg_height, svg_width,
           color, type, chosenTags)
           .then((data) => {
-            this.setState((state) => {
-              return {
-                ...state,
-                loading: false
-              };
-            });
-            alert(data.createRoute.route.name);
+            if (data) {
+              this.props.navigation.dismiss();
+              this.setState((state) => {
+                return {
+                  ...state,
+                  loading: false
+                };
+              });
+            }
           });
       })
       .catch((error) => {

@@ -134,7 +134,7 @@ class RoutesScreen extends React.Component {
       >
         <StatusBar hidden />
         <Query query={GET_ROUTES}>
-          {({ loading, error, data }) => {
+          {({ loading, error, data, refetch }) => {
             if (loading) return (
               <ActivityIndicator
                 size='large'
@@ -155,6 +155,8 @@ class RoutesScreen extends React.Component {
                   sections={routes}
                   renderItem={this.renderItem}
                   keyExtractor={item => item._id}
+                  onRefresh={() => refetch()}
+                  refreshing={false}
                 />      
               );
             }
