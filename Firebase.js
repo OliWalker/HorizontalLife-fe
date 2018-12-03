@@ -1,12 +1,11 @@
-const Firebase = require('firebase');
-// Required for side-effects
+const firebase = require('firebase');
 require('firebase/firestore');
 import uploadPhoto from './utils/uploadPhoto';
 import configVar from './config';
 
-const collectionName = 'routes-images';
+const collectionName = 'routes';
 
-export default class FirebaseClass {
+class Firebase {
 
   constructor () {
     const config = {
