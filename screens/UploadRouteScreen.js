@@ -15,10 +15,9 @@ import { graphql } from 'react-apollo';
 
 import Chip from '../components/Chip';
 import FlatTextInput from '../components/FlatTextInput';
-import FirebaseClass from '../Firebase';
+import Firebase from '../Firebase';
 import colors from '../constants/Colors';
 
-const Firebase = new FirebaseClass();
 const platformMainColor = Platform.OS == 'ios'
   ? colors.iosMain : colors.androidMain;
 
@@ -61,7 +60,7 @@ class UploadRouteScreen extends React.Component {
         loading: true
       };
     });
-    Firebase.post(imageUri, routeName)
+    Firebase.shared.post(imageUri, routeName)
       .then((uri) => {
         this.props.createNewRoute(routeName, '5c041778d8198c394db5649c',
           grade, uri,height, width, svg, svg_points, svg_height, svg_width,

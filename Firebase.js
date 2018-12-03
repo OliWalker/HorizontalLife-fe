@@ -16,18 +16,18 @@ class Firebase {
       storageBucket: configVar.STORAGE_BUCKET,
       messagingSenderId: configVar.MESSAGING_SENDER_ID
     };
-    Firebase.initializeApp(config);
+    firebase.initializeApp(config);
   }
 
   uploadPhotoAsync = async (uri, route) => {
     const path = `${collectionName}/${route}.jpg`;
-    return uploadPhoto(uri, path);
+    const url = await uploadPhoto(uri, path);
+    return url;
   };
 
   post = async ( uri, route ) => {
     try {
       const remoteUri = await this.uploadPhotoAsync(uri, route);
-      console.log(remoteUri, 'remote uri');
       return remoteUri;
     } catch ({ message }) {
       console.error(message);
@@ -35,4 +35,7 @@ class Firebase {
     }
   };
 }
+
+Firebase.shared = new Firebase();
+export default Firebase;
 
