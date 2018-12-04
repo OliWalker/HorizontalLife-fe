@@ -36,6 +36,7 @@ const GET_ROUTES = gql`
     svg_color
     svg_height
     svg_width
+    tags
   }
 }`;
 
@@ -117,7 +118,8 @@ class RoutesScreen extends React.Component {
         type: item.svg_type,
         svg: item.svg_type == 'circle' ? item.svg_points : item.svg,
         svg_height: item.svg_height,
-        svg_width: item.svg_width
+        svg_width: item.svg_width,
+        tags: item.tags
       })}
     />
     

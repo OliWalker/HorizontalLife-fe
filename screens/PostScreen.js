@@ -1,12 +1,30 @@
 import React from 'react';
-import { View, Image, Dimensions, StyleSheet } from 'react-native';
-import { Svg } from 'expo';
+import {
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity,
+  Platform
+} from 'react-native';
+
+import Chip from '../components/Chip';
+import colors from '../constants/Colors';
+
+const platformMainColor = Platform.OS == 'ios'
+  ? colors.iosMain : colors.androidMain;
 
 class PostScreen extends React.Component {
 
-  static navigationOptions = {
-    header: null
-  };
+  static navigationOptions = ({ navigation }) =>  {
+    return {
+      title: navigation.getParam('name', 'Route'),
+      headerStyle: {
+        backgroundColor: platformMainColor
+      },
+      headerTintColor: 'white',
+    };
+  }
 
   constructor(props) {
     super(props);
@@ -16,30 +34,20 @@ class PostScreen extends React.Component {
     };
   }
 
-  renderSVG = (color, type, svg) => {
-    if (type == 'line') {
+  renderTags = (tagsArray) => {
+    const tags = tagsArray.map((tag) => {
+      const backgroundColor = 'rgba(52, 143, 249, 0.34)';
+      const color = 'rgba(0, 122, 255, 1)';
       return (
-        <Svg.Path
-          d={svg}
-          fill='none'
-          stroke={color}
-          strokeWidth={2.5}
+        <Chip
+          key={tag}
+          name={tag}
+          color={color}
+          backgroundColor={backgroundColor}
         />
       );
-    } else {
-      const circles = svg.map(point =>
-        <Svg.Circle
-          key={point.timestamp}
-          cx={point.x}
-          cy={point.y}
-          r={25}
-          strokeWidth={2.5}
-          stroke={color}
-          fill='none'
-        />
-      );
-      return circles;
-    }
+    });
+    return tags;
   }
 
   render () {
@@ -50,36 +58,32 @@ class PostScreen extends React.Component {
       type,
       svg,
       svg_height,
-      svg_width
+      svg_width,
+      tags
     } = this.props.navigation.state.params;
     const { height } = this.state;
     return (
       <View style={styles.container}>
-        <View>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.navigate('RoutePreviewScreen', {
+            imageUri,
+            color,
+            type,
+            svg,
+            svg_height,
+            svg_width
+          })}
+        >
           <Image
-            source={{ uri: imageUri }}
+            source={{ uri: imageUri}}
             style={{
-              height: svg_height,
-              width: svg_width,
-            }}>
-          </Image>
-          <View
-            style={{
-              position: 'absolute',
-              height: svg_height,
-              width: svg_width,
-              marginTop: height - svg_height
+              width: 200,
+              height: 200,
+              alignSelf: 'center'
             }}
-          >
-            <Svg
-              height={svg_height}
-              width={svg_width}
-              viewBox={`0 ${height - svg_height} ${svg_width} ${svg_height}`}
-            >
-              {this.renderSVG(color, type, svg)}
-            </Svg>
-          </View>
-        </View>
+          />
+        </TouchableOpacity>
+        {this.renderTags(tags)}
       </View>
     );
   }
@@ -88,8 +92,8 @@ class PostScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    justifyContent: 'center'
+    // backgroundColor: 'black',
+    // justifyContent: 'center'
   },
 });
 

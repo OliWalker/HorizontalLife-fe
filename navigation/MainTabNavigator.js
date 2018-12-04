@@ -108,5 +108,6 @@ TabNavigator.navigationOptions = {
 
 export default createStackNavigator({
   Tabs: TabNavigator,
-  ImageUploadStack //route to render above the tab bar
+  ImageUploadStack, //route to render above the tab bar
+  RoutePreviewScreen
 });
