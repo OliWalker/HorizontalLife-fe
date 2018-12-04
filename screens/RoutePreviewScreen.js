@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Image, Dimensions, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity
+} from 'react-native';
 import { Svg } from 'expo';
 
 class RoutePreview extends React.Component {
@@ -54,31 +60,35 @@ class RoutePreview extends React.Component {
     const { height } = this.state;
     return (
       <View style={styles.container}>
-        <View>
-          <Image
-            source={{ uri: imageUri }}
-            style={{
-              height: svg_height,
-              width: svg_width,
-            }}>
-          </Image>
-          <View
-            style={{
-              position: 'absolute',
-              height: svg_height,
-              width: svg_width,
-              marginTop: height - svg_height
-            }}
-          >
-            <Svg
-              height={svg_height}
-              width={svg_width}
-              viewBox={`0 ${height - svg_height} ${svg_width} ${svg_height}`}
+        <TouchableOpacity
+          onPress={() => this.props.navigation.goBack()}
+        >
+          <View>
+            <Image
+              source={{ uri: imageUri }}
+              style={{
+                height: svg_height,
+                width: svg_width,
+              }}>
+            </Image>
+            <View
+              style={{
+                position: 'absolute',
+                height: svg_height,
+                width: svg_width,
+                marginTop: height - svg_height
+              }}
             >
-              {this.renderSVG(color, type, svg)}
-            </Svg>
+              <Svg
+                height={svg_height}
+                width={svg_width}
+                viewBox={`0 ${height - svg_height} ${svg_width} ${svg_height}`}
+              >
+                {this.renderSVG(color, type, svg)}
+              </Svg>
+            </View>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     );
   }

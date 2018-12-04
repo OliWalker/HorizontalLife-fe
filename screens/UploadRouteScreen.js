@@ -7,7 +7,8 @@ import {
   Slider,
   StyleSheet,
   ActivityIndicator,
-  Platform
+  Platform,
+  Keyboard
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import gql from 'graphql-tag';
@@ -40,6 +41,7 @@ class UploadRouteScreen extends React.Component {
   }
 
   publishRoute = () => {
+    Keyboard.dismiss();
     const { routeName, chosenTags, selectedGradeIndex } = this.state;
     const grade = this.props.grades[selectedGradeIndex];
     const {
