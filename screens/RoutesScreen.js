@@ -6,7 +6,8 @@ import {
   StatusBar,
   Dimensions,
   SectionList,
-  Text
+  Text,
+  ActivityIndicator
 } from 'react-native';
 import { withNavigation } from 'react-navigation';
 import ActionButton from 'react-native-action-button';
@@ -16,10 +17,26 @@ import { Query } from 'react-apollo';
 import Colors from '../constants/Colors';
 import RouteListItem from '../components/RouteListItem';
 
+const platformMainColor = Platform.OS == 'ios'
+  ? Colors.iosMain : Colors.androidMain;
+
 const GET_ROUTES = gql`
 {
   all_routes {
+    _id
     name
+    grade_routesetter
+    img_url
+    svg
+    svg_points {
+      x
+      y
+    }
+    svg_type
+    svg_color
+    svg_height
+    svg_width
+    tags
   }
 }`;
 
@@ -35,27 +52,6 @@ class RoutesScreen extends React.Component {
   
   static defaultProps = {
     authorized: true,
-    sections: [
-      {
-        title: 'pending', data: [
-          { route: { id: '1', name: 'Plastic tortilla', grade: '8C', new: true } },
-          { route: { id: '2', name: 'Bananas', grade: '8B', new: true } },
-          { route: { id: '3', name: 'Aloe', grade: '6A+', new: false } },
-          { route: { id: '4', name: 'Bezoya', grade: '5', new: false } },
-          { route: { id: '5', name: 'Mononoke', grade: '7C+', new: false } },
-          { route: { id: '6', name: 'Plastic tortilla', grade: '8C', new: false } },
-          { route: { id: '7', name: 'Bananas', grade: '8B', new: false } },
-          { route: { id: '8', name: 'Aloe', grade: '6A+', new: false } },
-          { route: { id: '9', name: 'Bezoya', grade: '5', new: false } },
-        ]
-      },
-      {
-        title: 'done', data: [
-          { route: { id: '16', name: 'Plastic tortilla!', grade: '8C', new: true } },
-          { route: { id: '17', name: 'Bananas!', grade: '8B', new: false } },
-        ]
-      }
-    ]
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -110,32 +106,60 @@ class RoutesScreen extends React.Component {
 
   renderItem = ({ item, section }) => 
     <RouteListItem
-      name={item.route.name}
-      grade={item.route.grade}
-      new={item.route.new}
+      key={item.name}
+      name={item.name}
+      grade={item.grade_routesetter}
+      new={item.new}
       done={section.title == 'done'}
+      onPress={() => this.props.navigation.navigate('Post', {
+        imageUri: item.img_url,
+        name: item.name,
+        color: item.svg_color,
+        type: item.svg_type,
+        svg: item.svg_type == 'circle' ? item.svg_points : item.svg,
+        svg_height: item.svg_height,
+        svg_width: item.svg_width,
+        tags: item.tags
+      })}
     />
     
 
   render() {
     const { sections } = this.props;
     return (
-      <View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center'
+        }}
+      >
         <StatusBar hidden />
         <Query query={GET_ROUTES}>
-          {({ loading, error, data }) => {
-            if (loading) return <Text>Loading...</Text>;
+          {({ loading, error, data, refetch }) => {
+            if (loading) return (
+              <ActivityIndicator
+                size='large'
+                color={platformMainColor}
+              />
+            );
             if (error) return <Text>`Error! ${JSON.stringify(error)}`</Text>;
-            if (data) console.log(data)
-            return (
-              <SectionList
-                ItemSeparatorComponent={this.renderSeparator}
-                renderSectionFooter={this.renderSeparator}
-                sections={sections}
-                renderItem={this.renderItem}
-                keyExtractor={item => item.route.id}
-              />      
-            )
+            if (data) {
+              const routes = [{
+                data: data.all_routes,
+                title: 'pending'
+              }];
+              return (
+                <SectionList
+                  ItemSeparatorComponent={this.renderSeparator}
+                  renderSectionFooter={this.renderSeparator}
+                  sections={routes}
+                  renderItem={this.renderItem}
+                  keyExtractor={item => item._id}
+                  onRefresh={() => refetch()}
+                  refreshing={false}
+                />      
+              );
+            }
           }}
         </Query>
         {Platform.OS == 'android' &&

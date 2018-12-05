@@ -1,39 +1,18 @@
 import React from 'react';
-import { View, Image, Dimensions, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  Image,
+  Dimensions,
+  StyleSheet,
+  TouchableOpacity
+} from 'react-native';
 import { Svg } from 'expo';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  container_header: {
-    flex: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white'
-  },
-  text_route_name: {
-    fontSize: 40,
-    fontWeight: '400',
-    marginLeft: 20,
-  },
-  text_grade: {
-    fontSize: 45,
-    marginLeft: 30
-  }
-});
 
 class RoutePreview extends React.Component {
 
   static navigationOptions = {
     header: null
   };
-
-  static defaultProps = {
-    grades: ['5', '5+', '6A', '6A+', '6B', '6B+', '6C', '6C+',
-      '7A', '7A+', '7B', '7B+', '7C', '7C+',
-      '8A', '8A+', '8B', '8B+', '8C', '8C+']
-  }
 
   constructor(props) {
     super(props);
@@ -72,40 +51,19 @@ class RoutePreview extends React.Component {
   render() {
     const {
       imageUri,
-      routeName,
-      grade,
       color,
       type,
       svg,
       svg_height,
       svg_width
     } = this.props.navigation.state.params;
-    const { height, width } = this.state;
+    const { height } = this.state;
     return (
-      <View>
-        {height && 
-          <View
-            style={styles.container}>
-            <View
-              style={{
-                ...styles.container_header,
-                height: height-svg_height
-              }}
-            >
-              <Text
-                style={{
-                  ...styles.text_route_name,
-                  width: width * 0.6
-                }}
-              >
-                {routeName}
-              </Text>
-              <Text
-                style={styles.text_grade}
-              >
-                {this.props.grades[grade]}
-              </Text>
-            </View>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.goBack()}
+        >
+          <View>
             <Image
               source={{ uri: imageUri }}
               style={{
@@ -124,15 +82,24 @@ class RoutePreview extends React.Component {
               <Svg
                 height={svg_height}
                 width={svg_width}
+                viewBox={`0 ${height - svg_height} ${svg_width} ${svg_height}`}
               >
                 {this.renderSVG(color, type, svg)}
               </Svg>
             </View>
           </View>
-        }
+        </TouchableOpacity>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+    justifyContent: 'center'
+  },
+});
 
 export default RoutePreview;

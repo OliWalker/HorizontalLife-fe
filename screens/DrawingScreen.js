@@ -13,41 +13,8 @@ import { withNavigation } from 'react-navigation';
 import ColorWheel from '../components/ColorWheel';
 import DrawingLayer from '../components/DrawingLayer';
 
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  container_bottom: {
-    flex: 0,
-    backgroundColor: 'rgba(255, 255, 255, 0)',
-    height: 120,
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  button_done: {
-    position: 'absolute',
-    flex: 0,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'flex-end',
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    marginTop: 20,
-    width: 100,
-    height: 40,
-    borderRadius: 50
-  },
-  text_button_done: {
-    fontSize: 25,
-    color: '#007AFF'
-  }
-});
-
 class DrawingScreen extends React.Component {
 
-  //this is the top bar
   static navigationOptions = {
     header: null
   };
@@ -239,5 +206,35 @@ class DrawingScreen extends React.Component {
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
+  container_bottom: {
+    flex: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0)',
+    height: 120,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  button_done: {
+    position: 'absolute',
+    flex: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    marginTop: 20,
+    width: 100,
+    height: 40,
+    borderRadius: 50
+  },
+  text_button_done: {
+    fontSize: 25,
+    color: '#007AFF'
+  }
+});
 
 export default withNavigation(DrawingScreen);

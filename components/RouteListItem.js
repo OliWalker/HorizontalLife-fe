@@ -40,15 +40,17 @@ export default class RouteListItem extends React.Component {
     name: '',
     grade: '',
     new: false,
-    done: false
+    done: false,
+    onPress: () => {}
   }
 
   render() {
-    const { name, grade, done } = this.props;
+    const { name, grade, done, onPress } = this.props;
     const newRoute = this.props.new;
     return (
       <TouchableOpacity
         style={styles.container}
+        onPress={onPress}
       >
         <View
           style={styles.container_left}

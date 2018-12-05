@@ -12,55 +12,8 @@ import { Icon, Button } from 'react-native-elements';
 import { Camera, Permissions, ImagePicker } from 'expo';
 import { withNavigation } from 'react-navigation';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  },
-  container_button_back: {
-    marginTop: 20,
-    marginLeft: 20
-  },
-  button_back: {
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    width: 60,
-    height: 60,
-    borderColor: 'transparent',
-    borderWidth: 0,
-    borderRadius: 50,
-  },
-  container_bottom: {
-    flex: 0,
-    backgroundColor: 'black',
-    height: 120,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  camera: {
-    flex: 1,
-    justifyContent: 'space-between'
-  },
-  container_touchable_image: {
-    position: 'absolute',
-    left: 10,
-    bottom: 10
-  },
-  image_photo_gallery: {
-    height: 40,
-    width: 40
-  },
-  button_camera: {
-    backgroundColor: 'rgba(255, 255, 255, 0)',
-    width: 60,
-    height: 60,
-    borderColor: 'rgba(255, 255, 255, 1)',
-    borderWidth: 6,
-    borderRadius: 50,
-  }
-});
-
 class ImagePickerScreen extends React.Component {
 
-    //this is the top bar
     static navigationOptions = {
       header: null
     };
@@ -180,5 +133,51 @@ class ImagePickerScreen extends React.Component {
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  container_button_back: {
+    marginTop: 20,
+    marginLeft: 20
+  },
+  button_back: {
+    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    width: 60,
+    height: 60,
+    borderColor: 'transparent',
+    borderWidth: 0,
+    borderRadius: 50,
+  },
+  container_bottom: {
+    flex: 0,
+    backgroundColor: 'black',
+    height: 120,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  camera: {
+    flex: 1,
+    justifyContent: 'space-between'
+  },
+  container_touchable_image: {
+    position: 'absolute',
+    left: 10,
+    bottom: 10
+  },
+  image_photo_gallery: {
+    height: 40,
+    width: 40
+  },
+  button_camera: {
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    width: 60,
+    height: 60,
+    borderColor: 'darkgrey',
+    borderWidth: 6,
+    borderRadius: 50,
+  }
+});
 
 export default withNavigation(ImagePickerScreen);

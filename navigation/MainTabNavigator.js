@@ -10,6 +10,7 @@ import GymListScreen from '../screens/GymListScreen';
 import HomeGymScreen from '../screens/HomeGymScreen';
 
 import RoutesScreen from '../screens/RoutesScreen';
+import PostScreen from '../screens/PostScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ImagePickerScreen from '../screens/ImagePickerScreen';
 import DrawingScreen from '../screens/DrawingScreen';
@@ -35,6 +36,7 @@ GymsStack.navigationOptions = {
 
 const RoutesStack = createStackNavigator({
   Routes: RoutesScreen,
+  Post: PostScreen
 });
 
 
@@ -106,5 +108,6 @@ TabNavigator.navigationOptions = {
 
 export default createStackNavigator({
   Tabs: TabNavigator,
-  ImageUploadStack //route to render above the tab bar
+  ImageUploadStack, //route to render above the tab bar
+  RoutePreviewScreen
 });
