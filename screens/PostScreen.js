@@ -83,7 +83,11 @@ class PostScreen extends React.Component {
             }}
           />
         </TouchableOpacity>
-        {this.renderTags(tags)}
+        <View
+          style={styles.container_tags}
+        >
+          {this.renderTags(tags)}
+        </View>
       </View>
     );
   }
@@ -92,8 +96,11 @@ class PostScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: 'black',
-    // justifyContent: 'center'
+  },
+  container_tags: {
+    flex: 0,
+    flexWrap: 'wrap',
+    flexDirection: 'row'
   },
 });
 
