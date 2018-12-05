@@ -203,7 +203,7 @@ class UploadRouteScreen extends React.Component {
             <FlatTextInput
               height={height * 0.1}
               width={width * 0.6}
-              placeholder='Witness the Fitness'
+              placeholder="Route\'s name"
               label={this.state.routeName && 'Route\'s name'}
               getText={this.getText}
             />
