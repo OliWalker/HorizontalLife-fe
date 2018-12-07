@@ -76,13 +76,11 @@ class RoutePreview extends React.Component {
                 position: 'absolute',
                 height: svg_height,
                 width: svg_width,
-                marginTop: height - svg_height
               }}
             >
               <Svg
                 height={svg_height}
                 width={svg_width}
-                viewBox={`0 ${height - svg_height} ${svg_width} ${svg_height}`}
               >
                 {this.renderSVG(color, type, svg)}
               </Svg>
