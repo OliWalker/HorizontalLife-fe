@@ -2,7 +2,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
 } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -17,11 +17,9 @@ import DrawingScreen from '../screens/DrawingScreen';
 import UploadRouteScreen from '../screens/UploadRouteScreen';
 import RoutePreviewScreen from '../screens/RoutePreviewScreen';
 
-// import UnusedScreen from '../screens/UnusedScreen';
-
 const GymsStack = createStackNavigator({
   Gyms: GymListScreen,
-  HomeGymScreen: { screen: HomeGymScreen }
+  HomeGymScreen: { screen: HomeGymScreen },
 });
 
 GymsStack.navigationOptions = {
@@ -31,14 +29,13 @@ GymsStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
-  )
+  ),
 };
 
 const RoutesStack = createStackNavigator({
   Routes: RoutesScreen,
-  Post: PostScreen
+  Post: PostScreen,
 });
-
 
 RoutesStack.navigationOptions = {
   tabBarLabel: 'Routes',
@@ -51,11 +48,11 @@ RoutesStack.navigationOptions = {
           : 'md-information-circle'
       }
     />
-  )
+  ),
 };
 
 const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen
+  Profile: ProfileScreen,
 });
 
 ProfileStack.navigationOptions = {
@@ -65,28 +62,14 @@ ProfileStack.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
     />
-  )
+  ),
 };
-
-// const UnusedStack = createStackNavigator({
-//   Unused: UnusedScreen
-// });
-
-// UnusedStack.navigationOptions = {
-//   tabBarLabel: 'Unused',
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
-//     />
-//   )
-// };
 
 const ImageUploadStack = createStackNavigator({
   ImagePicker: ImagePickerScreen,
   DrawingScreen,
   UploadRouteScreen,
-  RoutePreviewScreen
+  RoutePreviewScreen,
 });
 
 ImageUploadStack.navigationOptions = {
@@ -94,11 +77,10 @@ ImageUploadStack.navigationOptions = {
   header: null,
 };
 
-const TabNavigator =  createBottomTabNavigator({
+const TabNavigator = createBottomTabNavigator({
   GymsStack,
   RoutesStack,
-  ProfileStack
-  // UnusedStack
+  ProfileStack,
 });
 
 TabNavigator.navigationOptions = {
@@ -109,5 +91,5 @@ TabNavigator.navigationOptions = {
 export default createStackNavigator({
   Tabs: TabNavigator,
   ImageUploadStack, //route to render above the tab bar
-  RoutePreviewScreen
+  RoutePreviewScreen,
 });
