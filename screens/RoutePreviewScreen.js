@@ -4,14 +4,13 @@ import {
   Image,
   Dimensions,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 import { Svg } from 'expo';
 
 class RoutePreview extends React.Component {
-
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   constructor(props) {
@@ -24,16 +23,9 @@ class RoutePreview extends React.Component {
 
   renderSVG = (color, type, svg) => {
     if (type == 'line') {
-      return (
-        <Svg.Path
-          d={svg}
-          fill='none'
-          stroke={color}
-          strokeWidth={2.5}
-        />
-      );
+      return <Svg.Path d={svg} fill="none" stroke={color} strokeWidth={2.5} />;
     } else {
-      const circles = svg.map(point =>
+      const circles = svg.map(point => (
         <Svg.Circle
           key={point.timestamp}
           cx={point.x}
@@ -41,12 +33,12 @@ class RoutePreview extends React.Component {
           r={25}
           strokeWidth={2.5}
           stroke={color}
-          fill='none'
+          fill="none"
         />
-      );
+      ));
       return circles;
     }
-  }
+  };
 
   render() {
     const {
@@ -55,22 +47,19 @@ class RoutePreview extends React.Component {
       type,
       svg,
       svg_height,
-      svg_width
+      svg_width,
     } = this.props.navigation.state.params;
-    const { height } = this.state;
     return (
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-        >
+        <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
           <View>
             <Image
               source={{ uri: imageUri }}
               style={{
                 height: svg_height,
                 width: svg_width,
-              }}>
-            </Image>
+              }}
+            ></Image>
             <View
               style={{
                 position: 'absolute',
@@ -78,10 +67,7 @@ class RoutePreview extends React.Component {
                 width: svg_width,
               }}
             >
-              <Svg
-                height={svg_height}
-                width={svg_width}
-              >
+              <Svg height={svg_height} width={svg_width}>
                 {this.renderSVG(color, type, svg)}
               </Svg>
             </View>
@@ -96,7 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'black',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 });
 

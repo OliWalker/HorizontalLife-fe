@@ -100,10 +100,6 @@ const styles = StyleSheet.create({
     minWidth: 110,
     marginBottom: 10
   },
-  icon: {
-    width: 50,
-    height: 50
-  },
   statText: {
     fontSize: 20
   }

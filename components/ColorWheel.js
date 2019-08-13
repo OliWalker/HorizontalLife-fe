@@ -3,27 +3,35 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { Svg } from 'expo';
 
 class ColorWheel extends React.Component {
-
   static defaultProps = {
     size: 200,
-    colorArray: ['orange', 'red', 'hotpink', 'purple', 'blue', 'lightskyblue', 'springgreen', 'yellow'],
-  }
+    colorArray: [
+      'orange',
+      'red',
+      'hotpink',
+      'purple',
+      'blue',
+      'lightskyblue',
+      'springgreen',
+      'yellow',
+    ],
+  };
 
   state = {
     selectedColor: 'yellow',
-  }
+  };
 
   chooseColor = (color) => {
     this.setState({
-      selectedColor: color
+      selectedColor: color,
     });
     this.props.getColor(color);
-  }
-  
+  };
+
   renderPaths = () => {
     //https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#Arcs
     const { colorArray } = this.props;
-    const  { size } = this.props;
+    const { size } = this.props;
     const strokeWidth = size * 0.15;
     const centerX = size / 2;
     // const centerY = size / 2;
@@ -41,24 +49,24 @@ class ColorWheel extends React.Component {
     //Deduct y postion from size (Container's square side) because y axis is reversed
 
     // We only use centerX because the component is square, so centerX === centerY
-    const evalCoordinate = (angle, fn = Math.cos) => Math.round(fn(angle) * radiusXY) + centerX;
+    const evalCoordinate = (angle, fn = Math.cos) =>
+      Math.round(fn(angle) * radiusXY) + centerX;
     const paths = colorArray.map((path, index) => {
-
       const color = colorArray[index];
-      const startAngle = (wheelPartAngle * index) * (Math.PI / 180);
-      const finalAngle = (wheelPartAngle * (index + 1)) * (Math.PI / 180);
+      const startAngle = wheelPartAngle * index * (Math.PI / 180);
+      const finalAngle = wheelPartAngle * (index + 1) * (Math.PI / 180);
       const x = evalCoordinate(startAngle);
       const y = size - evalCoordinate(startAngle, Math.sin);
       const finalX = evalCoordinate(finalAngle);
       const finalY = size - evalCoordinate(finalAngle, Math.sin);
-      
+
       //start point for the path
-      const M = index === 0
-        ? `${centerX + radiusXY} ${size/2}`
-        : `${x} ${y}`;
+      const M = index === 0 ? `${centerX + radiusXY} ${size / 2}` : `${x} ${y}`;
 
       //arc of the ellipse
-      const d = `M${M} A ${radiusXY} ${radiusXY} ${xAxisRotation} ${largeArcFlag} ${sweepFlag} ${finalX} ${finalY}`;
+      const d = `M${M} A ${
+        radiusXY} ${radiusXY} ${xAxisRotation} ${
+        largeArcFlag} ${sweepFlag} ${finalX} ${finalY}`;
       return (
         <TouchableWithoutFeedback
           key={color}
@@ -66,15 +74,15 @@ class ColorWheel extends React.Component {
         >
           <Svg.Path
             d={d}
-            fill='none'
+            fill="none"
             stroke={color}
             strokeWidth={strokeWidth}
           />
         </TouchableWithoutFeedback>
       );
     });
-    return  paths;
-  }
+    return paths;
+  };
 
   render() {
     const { selectedColor } = this.state;
@@ -83,10 +91,7 @@ class ColorWheel extends React.Component {
     const centerY = size / 2;
     const radiusInnerCircle = size * 0.25;
     return (
-      <Svg
-        height={size}
-        width={size}
-      >
+      <Svg height={size} width={size}>
         <Svg.Circle
           cx={centerX}
           cy={centerY}
@@ -97,7 +102,6 @@ class ColorWheel extends React.Component {
       </Svg>
     );
   }
-
 }
 
 export default ColorWheel;

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, View, Button } from 'react-native';
-import data from '../data';
 
 export default props => (
   <View
@@ -9,7 +8,7 @@ export default props => (
       height: 400,
       backgroundColor: 'white',
       position: 'absolute',
-      zIndex: 10
+      zIndex: 10,
     }}
   >
     <Text>Hi!</Text>

@@ -5,26 +5,25 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
 } from 'react-native';
 
 import Chip from '../components/Chip';
 import colors from '../constants/Colors';
 
-const platformMainColor = Platform.OS == 'ios'
-  ? colors.iosMain : colors.androidMain;
+const platformMainColor =
+  Platform.OS == 'ios' ? colors.iosMain : colors.androidMain;
 
 class PostScreen extends React.Component {
-
-  static navigationOptions = ({ navigation }) =>  {
+  static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('name', 'Route'),
       headerStyle: {
-        backgroundColor: platformMainColor
+        backgroundColor: platformMainColor,
       },
       headerTintColor: 'white',
     };
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -48,46 +47,42 @@ class PostScreen extends React.Component {
       );
     });
     return tags;
-  }
+  };
 
-  render () {
+  render() {
     const {
-      name,
       imageUri,
       color,
       type,
       svg,
       svg_height,
       svg_width,
-      tags
+      tags,
     } = this.props.navigation.state.params;
-    const { height } = this.state;
     return (
       <View style={styles.container}>
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('RoutePreviewScreen', {
-            imageUri,
-            color,
-            type,
-            svg,
-            svg_height,
-            svg_width
-          })}
+          onPress={() =>
+            this.props.navigation.navigate('RoutePreviewScreen', {
+              imageUri,
+              color,
+              type,
+              svg,
+              svg_height,
+              svg_width,
+            })
+          }
         >
           <Image
-            source={{ uri: imageUri}}
+            source={{ uri: imageUri }}
             style={{
               width: 200,
               height: 200,
-              alignSelf: 'center'
+              alignSelf: 'center',
             }}
           />
         </TouchableOpacity>
-        <View
-          style={styles.container_tags}
-        >
-          {this.renderTags(tags)}
-        </View>
+        <View style={styles.container_tags}>{this.renderTags(tags)}</View>
       </View>
     );
   }
@@ -100,7 +95,7 @@ const styles = StyleSheet.create({
   container_tags: {
     flex: 0,
     flexWrap: 'wrap',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
 });
 
