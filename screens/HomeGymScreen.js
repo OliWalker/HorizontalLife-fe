@@ -1,13 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
-import {
-  Tile,
-  Avatar,
-  ButtonGroup,
-  Card,
-  Header,
-  Button
-} from 'react-native-elements';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 import data from '../data';
 import GymStats from '../components/GymStats';
@@ -16,11 +8,11 @@ import { TouchableOpacity } from 'react-native';
 export default class GymListScreen extends React.Component {
   //this is the top bar
   static navigationOptions = {
-    header: null
+    header: null,
   };
 
   state = {
-    stats: true
+    stats: true,
   };
 
   updateIndex = selectedIndex => this.setState({ selectedIndex });
@@ -30,7 +22,6 @@ export default class GymListScreen extends React.Component {
     return (
       <View style={styles.page}>
         <Image source={{ uri: data.Gym.picture }} style={styles.imageOverlay} />
-
         <View style={styles.banner}>
           <TouchableOpacity onPress={() => this.setState({ stats: false })}>
             <Text style={styles.headerButton}>[News Icon]</Text>
@@ -40,7 +31,6 @@ export default class GymListScreen extends React.Component {
             <Text style={styles.headerButton}>[Stats Icon]</Text>
           </TouchableOpacity>
         </View>
-
         {stats ? <GymStats /> : <View />}
       </View>
     );
@@ -50,11 +40,11 @@ export default class GymListScreen extends React.Component {
 const styles = StyleSheet.create({
   page: {
     display: 'flex',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
   },
   imageOverlay: {
     height: 200,
-    width: 411
+    width: 411,
   },
   banner: {
     width: 411,
@@ -64,16 +54,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10
+    padding: 10,
   },
   gymName: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 20
+    fontSize: 20,
   },
   headerButton: {
     color: 'white',
     fontSize: 15,
-    padding: 10
-  }
+    padding: 10,
+  },
 });

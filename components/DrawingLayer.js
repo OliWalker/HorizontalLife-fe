@@ -3,40 +3,37 @@ import { View } from 'react-native';
 import { Svg } from 'expo';
 
 class DrawingLayer extends React.Component {
-
   static defaultProps = {
     onPress: () => null,
     numberOfTouches: 1,
-  }
+  };
 
   state = {
     points: [],
     strokeWidth: 2.5,
     radius: 25,
     linePath: '',
-    linePoints: []
-  }
+    linePoints: [],
+  };
 
-  onStartShouldSetResponder = evt => evt.nativeEvent.touches.length === this.props.numberOfTouches;
+  onStartShouldSetResponder = evt =>
+    evt.nativeEvent.touches.length === this.props.numberOfTouches;
 
   onResponderRelease = (evt) => {
     if (this.props.isCircleMode) {
       const point = {
         x: evt.nativeEvent.locationX,
         y: evt.nativeEvent.locationY,
-        timestamp: evt.nativeEvent.timestamp
-      }
+        timestamp: evt.nativeEvent.timestamp,
+      };
       this.setState((state) => {
         return {
-          points: [
-            ...state.points,
-            point
-          ]
-        }
-      })
+          points: [...state.points, point],
+        };
+      });
     }
     this.props.onPress();
-  }
+  };
 
   onResponderMove = (evt) => {
     const x2 = evt.nativeEvent.locationX;
@@ -49,19 +46,18 @@ class DrawingLayer extends React.Component {
     const controlPointEndX = x2;
     const controlPointEndY = y2;
 
-    const line = ` C ${controlPointStartX} ${controlPointStartY}, ${controlPointEndX} ${controlPointEndY}, ${x2} ${y2}`
+    const line = `C ${
+      controlPointStartX} ${controlPointStartY}, ${
+      controlPointEndX} ${controlPointEndY}, ${x2} ${y2}`;
 
     this.setState((state) => {
       return {
         ...state,
         linePath: state.linePath + line,
-        linePoints: [
-          ...state.linePoints,
-          { x: x2, y: y2}
-        ]
-      }
-    })
-  }
+        linePoints: [...state.linePoints, { x: x2, y: y2 }],
+      };
+    });
+  };
 
   onResponderGrant = (evt) => {
     const x = evt.nativeEvent.locationX;
@@ -71,16 +67,16 @@ class DrawingLayer extends React.Component {
       return {
         ...state,
         linePath: startPoint,
-        linePoints: [ { x, y } ]
-      }
-    })
-  }
+        linePoints: [{ x, y }],
+      };
+    });
+  };
 
   renderCircle = () => {
     const { points, strokeWidth, radius } = this.state;
     const { color } = this.props;
     if (points.length > 0) {
-      const circles = points.map(point =>
+      const circles = points.map(point => (
         <Svg.Circle
           key={point.timestamp}
           cx={point.x}
@@ -88,12 +84,12 @@ class DrawingLayer extends React.Component {
           r={radius}
           strokeWidth={strokeWidth}
           stroke={color}
-          fill='none'
+          fill="none"
         />
-      )
-      return circles
+      ));
+      return circles;
     }
-  }
+  };
 
   renderLine = () => {
     const { strokeWidth, linePath } = this.state;
@@ -102,36 +98,35 @@ class DrawingLayer extends React.Component {
       return (
         <Svg.Path
           d={linePath}
-          fill='none'
+          fill="none"
           stroke={color}
           strokeWidth={strokeWidth}
         />
-      )
+      );
     }
-  }
+  };
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const { points } = this.state;
     if (prevProps.svgDone !== this.props.svgDone) {
-      this.updateSVG()
+      this.updateSVG();
     }
-    if (prevProps.undoCircle !== this.props.undoCircle
-        && points.length > 0) {
+    if (prevProps.undoCircle !== this.props.undoCircle && points.length > 0) {
       this.setState((state) => {
         return {
           ...state,
-          points: points.slice(0, points.length-1)
-        }
-      })
+          points: points.slice(0, points.length - 1),
+        };
+      });
     }
   }
 
   updateSVG = () => {
     const { points, linePath } = this.state;
-    this.props.isCircleMode ?
-      this.props.getSVG('circle', points)
+    this.props.isCircleMode
+      ? this.props.getSVG('circle', points)
       : this.props.getSVG('line', linePath);
-  }
+  };
 
   render() {
     const { height, width } = this.props;
@@ -143,19 +138,12 @@ class DrawingLayer extends React.Component {
         onResponderGrant={this.onResponderGrant}
         style={{
           height,
-          width
+          width,
         }}
       >
         {this.props.children}
-        <Svg
-          height={height}
-          width={width}
-        >
-          {
-            this.props.isCircleMode ?
-              this.renderCircle()
-              : this.renderLine()
-          }
+        <Svg height={height} width={width}>
+          {this.props.isCircleMode ? this.renderCircle() : this.renderLine()}
         </Svg>
       </View>
     );
