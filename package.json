@@ -14,8 +14,6 @@
     "preset": "jest-expo"
   },
   "dependencies": {
-    "@expo/samples": "2.1.1",
-    "@kiwicom/eslint-config": "^6.5.2",
     "apollo-boost": "^0.1.22",
     "expo": "^31.0.2",
     "firebase": "^4.10.0",
