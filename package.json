@@ -14,19 +14,20 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo/vector-icons": "^10.0.4",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.12",
     "apollo-link-dedup": "^1.0.19",
     "apollo-link-error": "^1.1.11",
     "apollo-link-http": "^1.5.15",
-    "expo": "^31.0.2",
+    "expo": "^34.0.1",
     "firebase": "^4.10.0",
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
-    "react": "16.5.0",
+    "react": "16.8.3",
     "react-apollo": "^2.3.2",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.0.tar.gz",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-action-button": "^2.8.5",
     "react-native-elements": "^1.0.0-beta7",
     "react-navigation": "^2.18.2"
