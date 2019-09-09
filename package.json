@@ -19,7 +19,7 @@
     "apollo-client": "^2.6.4",
     "apollo-link": "^1.2.12",
     "apollo-link-dedup": "^1.0.19",
-    "apollo-link-error": "^1.1.11",
+    "apollo-link-error": "^1.1.12",
     "apollo-link-http": "^1.5.15",
     "expo": "^34.0.1",
     "firebase": "^6.4.0",
