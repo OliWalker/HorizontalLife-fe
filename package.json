@@ -29,7 +29,7 @@
     "react-apollo": "^2.3.2",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
     "react-native-action-button": "^2.8.5",
-    "react-native-elements": "^1.0.0-beta7",
+    "react-native-elements": "^1.2.0",
     "react-navigation": "^3.11.1"
   },
   "devDependencies": {
