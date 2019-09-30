@@ -35,7 +35,7 @@
   "devDependencies": {
     "babel-eslint": "^10.0.2",
     "babel-preset-expo": "^5.2.0",
-    "eslint": "^6.2.0",
+    "eslint": "^6.5.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-native": "^3.7.0",
