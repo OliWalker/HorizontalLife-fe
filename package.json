@@ -22,7 +22,7 @@
     "apollo-link-error": "^1.1.11",
     "apollo-link-http": "^1.5.15",
     "expo": "^34.0.1",
-    "firebase": "^6.4.0",
+    "firebase": "^8.2.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "react": "16.8.3",
